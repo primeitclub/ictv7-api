@@ -1,0 +1,11 @@
+version: '3.0'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ictv7
+    image: ictv7
+    ports:
+      - 6969:6969
+    restart: unless-stopped
