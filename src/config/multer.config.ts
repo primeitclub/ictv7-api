@@ -10,6 +10,6 @@ export const multerConfig: MulterModuleOptions = {
       const fileExtension = file.originalname.split('.').pop();
       const filename = `${uniqueSuffix}.${fileExtension}`;
       callback(null, filename);
-    },
-  }),
+    }
+  })
 };
