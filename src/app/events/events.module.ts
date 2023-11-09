@@ -3,7 +3,7 @@ import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Event } from './models/Event.entity';
-import { Speaker } from './models/Speaker.model';
+import { Speaker } from './models/Speaker.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Event, Speaker])],

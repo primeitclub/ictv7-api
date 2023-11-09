@@ -14,7 +14,7 @@ export const typeOrmConfigs = () => {
     database: process.env.POSTGRES_DATABASE || 'ict_meetup_v7',
     logging: process.env.NODE_ENV === 'local' || 'development' ? true : false,
     logger: 'debug',
-    entities: [join(__dirname, '/../**/**.entity{.ts,.js}')],
+    entities: [join(__dirname, '/../app/**/**.entity{.ts,.js}')],
     migrations: [join(__dirname, '/../database/migrations/*.{ts,js}')],
     subscribers: [
       join(
@@ -22,8 +22,9 @@ export const typeOrmConfigs = () => {
         `/../database/subscribers/typeorm-entity.subscriber.{ts,js}`
       )
     ],
-    synchronize: false
+    synchronize: true
     // driver: pg,
   };
+
   return obj;
 };
