@@ -4,17 +4,16 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  PrimaryColumn,
   ManyToMany,
   JoinTable,
   OneToMany,
   OneToOne
 } from 'typeorm';
-import { UserType } from '../enums/user.enum';
-import { EsportsTeam } from './EsportsTeam.model';
-import { Event } from './Event.model'; // Import the EventDetails entity
 import { OTP } from './Otp.entity';
-import { Photos } from './Photos.model';
+import { Event } from 'src/app/events/models/Event.entity';
+import { UserType } from '../user.enum';
+import { EsportsTeam } from 'src/app/esports/models/EsportsTeam.entity';
+import { Photos } from 'src/app/gallery/Photos.entity';
 
 @Entity({ name: 'users' })
 export class User {
