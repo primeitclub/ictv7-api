@@ -3,39 +3,41 @@ import { IsNotEmpty, IsPhoneNumber } from 'class-validator';
 
 export class usersDto {
   @ApiProperty()
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: 'Email field is required.'
+  })
   email: string;
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'password is required'
+    message: 'Password field is required.'
   })
   password: string;
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'username is required'
+    message: 'Username field is required.'
   })
   username: string;
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'phone is required'
+    message: 'Phone number field is required.'
   })
-  @IsPhoneNumber('IN', {
-    message: 'phone must be a valid phone number'
+  @IsPhoneNumber('NE', {
+    message: 'Phone number must be a valid phone number.'
   })
   phone: string;
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'address is required'
+    message: 'Address field is required.'
   })
   address: string;
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'TnC flag is required'
+    message: 'Terms and conditions field is required.'
   })
   TnCFlag: boolean;
 }
