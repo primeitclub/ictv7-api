@@ -7,7 +7,8 @@ export const env = {
   version: process.env.VERSION || 'alpha'
 };
 
-export const googleClient = {
-  id: process.env.GOOGLE_CLIENT_ID,
-  secret: process.env.GOOGLE_CLIENT_SECRET
+export const google = {
+  clientId: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callBackURL: process.env.GOOGLE_CALLBACK_URL
 };

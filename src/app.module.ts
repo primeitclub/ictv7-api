@@ -7,6 +7,7 @@ import { EsportsModule } from './app/esports/esports.module';
 import { GalleryModule } from './app/gallery/gallery.module';
 import { EventsModule } from './app/events/events.module';
 import { UserModule } from './app/user/user.module';
+import { AuthModule } from './app/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { UserModule } from './app/user/user.module';
     EventsModule,
     UserModule,
     EsportsModule,
-    GalleryModule
+    GalleryModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService]
