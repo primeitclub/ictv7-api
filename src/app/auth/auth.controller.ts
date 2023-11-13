@@ -4,7 +4,7 @@ import { GoogleOAuthGuard } from './google-oauth.guard';
 @Controller('auth')
 export class AuthController {
   @Get('login-with-google')
-  @UseGuards()
+  @UseGuards(GoogleOAuthGuard)
   handleLoginWithGoogle() {
     return { message: 'OAuth using google.' };
   }
@@ -12,6 +12,6 @@ export class AuthController {
   @Get('google-redirect')
   @UseGuards(GoogleOAuthGuard)
   handleGoogleRedirect(@Req() req) {
-    console.log(req);
+    return req.user;
   }
 }
