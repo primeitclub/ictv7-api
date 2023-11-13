@@ -12,3 +12,7 @@ export const google = {
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callBackURL: process.env.GOOGLE_CALLBACK_URL
 };
+
+export const sessionKeys = {
+  secretKey: process.env.SESSION_SECRET_KEY
+};
