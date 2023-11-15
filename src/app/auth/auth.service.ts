@@ -1,17 +1,19 @@
 import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { loginUserDTO, registerUserDTO } from './auth.dto';
+import { forgotPasswordDTO, loginUserDTO, registerUserDTO } from './auth.dto';
 import { UserService } from '../user/user.service';
 import {
   comparePassword,
   generateHashedPassword
 } from '../../utils/bcrypt.util';
 import { JwtService } from '@nestjs/jwt';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private mailService: MailService
   ) {}
 
   async register(@Body() request: registerUserDTO) {
@@ -84,5 +86,24 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED
       );
     }
+  }
+
+  async forgotPassword(@Body() request: forgotPasswordDTO) {
+    const { email } = request;
+
+    const checkUserExists = await this.userService.findByEmail(email);
+
+    if (!checkUserExists)
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+
+    const content = 'You dumb ass. You forgot your password?';
+
+    await this.mailService.sendEmail(email, 'Forgot password email.', content);
+
+    return {
+      statusCode: 200,
+      message:
+        'A password reset email has been sent to your email address. Please check your inbox.'
+    };
   }
 }

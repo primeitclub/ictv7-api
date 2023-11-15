@@ -37,8 +37,8 @@ export class AuthController {
   }
 
   @Post('forgot-password')
-  handleForgotPassword(@Body() request: forgotPasswordDTO) {
-    console.log(request);
+  async handleForgotPassword(@Body() request: forgotPasswordDTO) {
+    return await this.authService.forgotPassword(request);
   }
 
   @Post('reset-password/:id/:token')
