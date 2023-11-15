@@ -32,8 +32,8 @@ export class AuthController {
   }
 
   @Post('login')
-  handleLogin(@Body() request: loginUserDTO) {
-    console.log(request);
+  async handleLogin(@Body() request: loginUserDTO) {
+    return await this.authService.login(request);
   }
 
   @Post('forgot-password')
