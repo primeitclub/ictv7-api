@@ -16,3 +16,8 @@ export const google = {
 export const sessionKeys = {
   secretKey: process.env.SESSION_SECRET_KEY
 };
+
+export const jwt = {
+  secretKey: process.env.JWT_SECRET_KEY,
+  expiresIn: process.env.JWT_TOKEN_EXPIRES_IN
+};

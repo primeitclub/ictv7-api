@@ -2,10 +2,14 @@ import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { loginUserDTO, registerUserDTO } from './auth.dto';
 import { UserService } from '../user/user.service';
 import { comparePassword, generateHashedPassword } from '../user/bcrypt.helper';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private jwtService: JwtService
+  ) {}
 
   async register(@Body() request: registerUserDTO) {
     const {
@@ -40,10 +44,11 @@ export class AuthService {
       TnCFlag
     });
 
-    return {
-      message: 'You have been registered successfully.',
-      data: user
-    };
+    if (user)
+      return {
+        statusCode: 200,
+        message: 'You have been registered successfully.'
+      };
   }
 
   async login(@Body() request: loginUserDTO) {
@@ -60,8 +65,15 @@ export class AuthService {
     );
 
     if (checkPassword) {
+      const accessToken = this.jwtService.sign({
+        sub: checkUserExists.id,
+        name: checkUserExists.username,
+        email: checkUserExists.email
+      });
       return {
-        message: 'You have been logged in successfully.'
+        statusCode: 200,
+        message: 'You have been logged in successfully.',
+        accessToken
       };
     } else {
       throw new HttpException(
