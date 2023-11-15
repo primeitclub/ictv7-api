@@ -1,7 +1,7 @@
 import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { registerUserDTO } from './auth.dto';
+import { loginUserDTO, registerUserDTO } from './auth.dto';
 import { UserService } from '../user/user.service';
-import { generateHashedPassword } from '../user/bcrypt.helper';
+import { comparePassword, generateHashedPassword } from '../user/bcrypt.helper';
 
 @Injectable()
 export class AuthService {
@@ -44,5 +44,30 @@ export class AuthService {
       message: 'You have been registered successfully.',
       data: user
     };
+  }
+
+  async login(@Body() request: loginUserDTO) {
+    const { email, password } = request;
+
+    const checkUserExists = await this.userService.findByEmail(email);
+
+    if (!checkUserExists)
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+
+    const checkPassword = await comparePassword(
+      password,
+      checkUserExists.password
+    );
+
+    if (checkPassword) {
+      return {
+        message: 'You have been logged in successfully.'
+      };
+    } else {
+      throw new HttpException(
+        'Credentials do not match our records.',
+        HttpStatus.UNAUTHORIZED
+      );
+    }
   }
 }
