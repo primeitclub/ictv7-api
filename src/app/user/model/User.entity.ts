@@ -17,20 +17,29 @@ import { Photos } from 'src/app/gallery/Photos.entity';
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ type: 'varchar' })
-  name: string;
+  @Column({
+    type: 'varchar',
+    nullable: false
+  })
+  username: string;
 
-  @Column({ type: 'varchar' })
-  address: string;
-
-  @Column({ type: 'varchar' })
+  @Column({
+    type: 'varchar',
+    unique: true
+  })
   email: string;
 
   @Column({ type: 'varchar' })
   phone: string;
+
+  @Column({ type: 'varchar' })
+  password: string;
+
+  @Column({ type: 'text' })
+  address: string;
 
   @Column({ type: 'enum', enum: UserType, default: UserType.user })
   user_type: UserType;
