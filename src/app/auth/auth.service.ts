@@ -1,4 +1,4 @@
-import { Body, Injectable } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { registerUserDTO } from './auth.dto';
 import { UserService } from '../user/user.service';
 import { generateHashedPassword } from '../user/bcrypt.helper';
@@ -18,6 +18,15 @@ export class AuthService {
       college_name,
       TnCFlag
     } = request;
+
+    const userAlreadyExist = await this.userService.findByEmail(email);
+
+    if (userAlreadyExist)
+      throw new HttpException(
+        'Email has already been taken.',
+        HttpStatus.FOUND
+      );
+
     const hashedPassword = await generateHashedPassword(password);
 
     const user = await this.userService.createUser({
