@@ -1,7 +1,10 @@
 import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { loginUserDTO, registerUserDTO } from './auth.dto';
 import { UserService } from '../user/user.service';
-import { comparePassword, generateHashedPassword } from '../user/bcrypt.helper';
+import {
+  comparePassword,
+  generateHashedPassword
+} from '../../utils/bcrypt.util';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
