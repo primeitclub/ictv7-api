@@ -4,7 +4,8 @@ import {
   registerUserDTO,
   loginUserDTO,
   forgotPasswordDTO,
-  resetPasswordDTO
+  resetPasswordDTO,
+  sendOTPVerificationMailDTO
 } from './auth.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -39,6 +40,11 @@ export class AuthController {
   @Post('forgot-password')
   async handleForgotPassword(@Body() request: forgotPasswordDTO) {
     return await this.authService.forgotPassword(request);
+  }
+
+  @Post('send-otp-verification-mail')
+  async handleGetOTP(@Body() request: sendOTPVerificationMailDTO) {
+    return await this.authService.sendOTPVerificationMail(request);
   }
 
   @Post('reset-password/:id/:token')
