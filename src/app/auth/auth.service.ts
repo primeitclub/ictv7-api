@@ -2,8 +2,8 @@ import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { forgotPasswordDTO, loginUserDTO, registerUserDTO } from './auth.dto';
 import { UserService } from '../user/user.service';
 import {
-  comparePassword,
-  generateHashedPassword
+  compareHashedInformation,
+  hashInformation
 } from '../../utils/bcrypt.util';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
@@ -36,7 +36,7 @@ export class AuthService {
         HttpStatus.FOUND
       );
 
-    const hashedPassword = await generateHashedPassword(password);
+    const hashedPassword = await hashInformation(password);
 
     const user = await this.userService.createUser({
       username,
@@ -64,7 +64,7 @@ export class AuthService {
     if (!checkUserExists)
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
 
-    const checkPassword = await comparePassword(
+    const checkPassword = await compareHashedInformation(
       password,
       checkUserExists.password
     );
