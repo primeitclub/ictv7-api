@@ -7,6 +7,7 @@ import {
 } from '../../utils/bcrypt.util';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
+import { generateOTP } from 'src/utils/generateOTP.util';
 
 @Injectable()
 export class AuthService {
@@ -104,6 +105,30 @@ export class AuthService {
       statusCode: 200,
       message:
         'A password reset email has been sent to your email address. Please check your inbox.'
+    };
+  }
+
+  async sendOTPVerificationMail(@Body() request: forgotPasswordDTO) {
+    const { email } = request;
+
+    const checkUserExists = await this.userService.findByEmail(email);
+
+    if (!checkUserExists)
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+
+    const otp = generateOTP();
+
+    const content = `OTP: ${otp}`;
+
+    await this.mailService.sendEmail(
+      email,
+      'OTP for email verification',
+      content
+    );
+
+    return {
+      statusCode: 200,
+      message: 'OTP has been sent successfully.'
     };
   }
 }

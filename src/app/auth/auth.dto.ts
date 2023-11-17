@@ -102,3 +102,11 @@ export class resetPasswordDTO {
   })
   passwordConfirmation: string;
 }
+
+export class sendOTPVerificationMailDTO {
+  @ApiProperty()
+  @IsNotEmpty({
+    message: 'Email field is required.'
+  })
+  email: string;
+}

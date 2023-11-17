@@ -13,5 +13,7 @@ export class MailService {
       subject: subject,
       text: mailContent
     });
+
+    console.log('MAIL SENT TO: ', receiver);
   }
 }
