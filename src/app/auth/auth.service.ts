@@ -8,6 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
 import { generateOTP } from 'src/utils/generateOTP.util';
+import { UserType } from '../user/user.enum';
 
 @Injectable()
 export class AuthService {
@@ -18,16 +19,8 @@ export class AuthService {
   ) {}
 
   async register(@Body() request: registerUserDTO) {
-    const {
-      username,
-      email,
-      phone,
-      password,
-      address,
-      user_type,
-      college_name,
-      TnCFlag
-    } = request;
+    const { username, email, phone, password, address, college_name, TnCFlag } =
+      request;
 
     const userAlreadyExist = await this.userService.findByEmail(email);
 
@@ -44,10 +37,11 @@ export class AuthService {
       email,
       phone,
       password: hashedPassword,
-      user_type,
+      user_type: UserType.user,
       college_name,
       address,
-      TnCFlag
+      TnCFlag,
+      verified: false
     });
 
     if (user)
@@ -86,6 +80,41 @@ export class AuthService {
         'Credentials do not match our records.',
         HttpStatus.UNAUTHORIZED
       );
+    }
+  }
+
+  async loginWithGoogle(@Body() request: any) {
+    const { username, email, accessToken, refreshToken } = request;
+
+    const checkUserExists = await this.userService.findByEmail(email);
+
+    if (checkUserExists)
+      throw new HttpException(
+        'Email has already been taken.',
+        HttpStatus.FOUND
+      );
+
+    if (!checkUserExists) {
+      const user = await this.userService.createUser({
+        username,
+        email,
+        phone: '',
+        password: '',
+        user_type: UserType.user,
+        college_name: '',
+        address: '',
+        TnCFlag: true,
+        verified: true
+      });
+
+      if (user) {
+        return {
+          statusCode: 200,
+          message: 'You have been registered successfully.',
+          accessToken,
+          refreshToken
+        };
+      }
     }
   }
 

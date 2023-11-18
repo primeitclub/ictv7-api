@@ -20,8 +20,10 @@ export class UserService {
     user_type: UserType;
     college_name: string;
     TnCFlag: boolean;
+    verified: boolean;
   }) {
     const newUser = await this.userRepository.save(user);
+
     return newUser;
   }
 
