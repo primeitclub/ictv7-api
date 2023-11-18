@@ -23,8 +23,8 @@ export class AuthController {
 
   @Get('google-redirect')
   @UseGuards(GoogleOAuthGuard)
-  handleGoogleRedirect(@Req() req) {
-    return req.user;
+  async handleGoogleRedirect(@Req() req) {
+    return await this.authService.loginWithGoogle(req.user);
   }
 
   @Post('register')

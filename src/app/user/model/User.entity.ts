@@ -32,19 +32,19 @@ export class User {
   })
   email: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   phone: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   password: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'varchar', nullable: true })
   address: string;
 
   @Column({ type: 'enum', enum: UserType, default: UserType.user })
   user_type: UserType;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   college_name: string;
 
   @Column({ type: 'boolean' })
