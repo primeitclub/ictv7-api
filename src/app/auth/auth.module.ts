@@ -9,10 +9,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwt } from 'src/config/env';
 import { JwtStratgegy } from './jwt.strategy';
 import { MailService } from 'src/mail/mail.service';
+import { OTP } from '../user/model/Otp.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, OTP]),
     JwtModule.register({
       secret: jwt.secretKey,
       signOptions: {

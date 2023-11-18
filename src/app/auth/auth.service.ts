@@ -9,13 +9,20 @@ import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
 import { generateOTP } from 'src/utils/generateOTP.util';
 import { UserType } from '../user/user.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { OTP } from '../user/model/Otp.entity';
+import { Repository } from 'typeorm';
+import calculateExpirationDate from 'src/utils/date.util';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private jwtService: JwtService,
-    private mailService: MailService
+    private mailService: MailService,
+
+    @InjectRepository(OTP)
+    private otpRepository: Repository<OTP>
   ) {}
 
   async register(@Body() request: registerUserDTO) {
@@ -136,14 +143,21 @@ export class AuthService {
   }
 
   async sendOTPVerificationMail(email: string) {
-    const checkUserExists = await this.userService.findByEmail(email);
+    const userExists = await this.userService.findByEmail(email);
 
-    if (!checkUserExists)
+    if (!userExists)
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
 
     const otp = generateOTP();
 
     const content = `OTP: ${otp}`;
+
+    await this.otpRepository.save({
+      otpNumber: otp,
+      expiresAt: await calculateExpirationDate(),
+      createdAt: new Date().toISOString(),
+      user: userExists
+    });
 
     await this.mailService.sendEmail(email, 'Verify your email', content);
 
