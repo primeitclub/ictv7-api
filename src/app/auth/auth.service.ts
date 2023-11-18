@@ -44,11 +44,9 @@ export class AuthService {
       verified: false
     });
 
-    if (user)
-      return {
-        statusCode: 200,
-        message: 'You have been registered successfully.'
-      };
+    if (user) {
+      await this.sendOTPVerificationMail(user.email);
+    }
   }
 
   async login(@Body() request: loginUserDTO) {
@@ -137,9 +135,7 @@ export class AuthService {
     };
   }
 
-  async sendOTPVerificationMail(@Body() request: forgotPasswordDTO) {
-    const { email } = request;
-
+  async sendOTPVerificationMail(email: string) {
     const checkUserExists = await this.userService.findByEmail(email);
 
     if (!checkUserExists)
@@ -149,15 +145,12 @@ export class AuthService {
 
     const content = `OTP: ${otp}`;
 
-    await this.mailService.sendEmail(
-      email,
-      'OTP for email verification',
-      content
-    );
+    await this.mailService.sendEmail(email, 'Verify your email', content);
 
     return {
       statusCode: 200,
-      message: 'OTP has been sent successfully.'
+      message:
+        'Verification mail has been sent to your email address. Please check your inbox.'
     };
   }
 }
