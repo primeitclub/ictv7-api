@@ -47,6 +47,9 @@ export class User {
   @Column({ type: 'varchar' })
   college_name: string;
 
+  @Column({ type: 'boolean' })
+  verified: boolean;
+
   @ManyToOne(() => EsportsTeam, (esports) => esports.id) // Assuming EsportsTeam is another entity representing the esports team
   @JoinColumn({ name: 'esports-team-id' })
   esportsTeam: EsportsTeam;
