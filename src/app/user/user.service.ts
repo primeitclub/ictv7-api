@@ -28,10 +28,16 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
+    return await this.userRepository.findOne({ where: { email } });
   }
 
   async getUser(id: string) {
-    return this.userRepository.findOne({ where: { id } });
+    return await this.userRepository.findOne({ where: { id } });
+  }
+
+  async getAllUsers() {
+    return await this.userRepository.find({
+      relations: { photograph: true, events: true, esportsTeam: true }
+    });
   }
 }
