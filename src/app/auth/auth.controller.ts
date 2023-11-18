@@ -48,6 +48,11 @@ export class AuthController {
     return await this.authService.sendOTPVerificationMail(request.email);
   }
 
+  @Post('verify-otp')
+  async handleVerifyOTP(@Body() request: verifyOTPDTO) {
+    return await this.authService.verifyOTP(request);
+  }
+
   @Post('reset-password/:id/:token')
   handleResetPassword(@Body() request: resetPasswordDTO) {
     console.log(request);
