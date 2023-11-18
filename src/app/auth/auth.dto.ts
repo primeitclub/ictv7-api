@@ -103,3 +103,17 @@ export class sendOTPVerificationMailDTO {
   })
   email: string;
 }
+
+export class verifyOTPDTO {
+  @ApiProperty()
+  @IsNotEmpty({
+    message: 'User id field is required.'
+  })
+  id: string;
+
+  @ApiProperty()
+  @IsNotEmpty({
+    message: 'OTP field is required.'
+  })
+  otp: number;
+}

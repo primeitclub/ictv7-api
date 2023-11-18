@@ -1,5 +1,10 @@
 import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { forgotPasswordDTO, loginUserDTO, registerUserDTO } from './auth.dto';
+import {
+  forgotPasswordDTO,
+  loginUserDTO,
+  registerUserDTO,
+  verifyOTPDTO
+} from './auth.dto';
 import { UserService } from '../user/user.service';
 import {
   compareHashedInformation,
@@ -13,6 +18,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { OTP } from '../user/model/Otp.entity';
 import { Repository } from 'typeorm';
 import calculateExpirationDate from 'src/utils/date.util';
+import { User } from '../user/model/User.entity';
 
 @Injectable()
 export class AuthService {
@@ -22,7 +28,10 @@ export class AuthService {
     private mailService: MailService,
 
     @InjectRepository(OTP)
-    private otpRepository: Repository<OTP>
+    private otpRepository: Repository<OTP>,
+
+    @InjectRepository(User)
+    private userRepository: Repository<User>
   ) {}
 
   async register(@Body() request: registerUserDTO) {
@@ -150,8 +159,6 @@ export class AuthService {
 
     const otp = generateOTP();
 
-    const content = `OTP: ${otp}`;
-
     await this.otpRepository.save({
       otpNumber: otp,
       expiresAt: await calculateExpirationDate(),
@@ -159,6 +166,7 @@ export class AuthService {
       user: userExists
     });
 
+    const content = `OTP: ${otp}`;
     await this.mailService.sendEmail(email, 'Verify your email', content);
 
     return {
@@ -166,5 +174,38 @@ export class AuthService {
       message:
         'Verification mail has been sent to your email address. Please check your inbox.'
     };
+  }
+
+  async verifyOTP(request: verifyOTPDTO) {
+    const { id, otp } = request;
+
+    const userExists = await this.userService.findById(id);
+
+    if (!userExists)
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+
+    const userOTP = await this.otpRepository.findOne({
+      where: {
+        user: { id },
+        otpNumber: otp
+      }
+    });
+
+    if (userOTP) {
+      if (new Date(userOTP.expiresAt) < new Date()) {
+        throw new HttpException('OTP has expired.', HttpStatus.BAD_REQUEST);
+      }
+
+      await this.otpRepository.remove(userOTP);
+
+      await this.userRepository.update(id, { verified: true });
+
+      return {
+        statusCode: 200,
+        message: 'Your email has been verified successfully.'
+      };
+    } else {
+      throw new HttpException('OTP not found.', HttpStatus.NOT_FOUND);
+    }
   }
 }
