@@ -3,6 +3,7 @@ import {
   forgotPasswordDTO,
   loginUserDTO,
   registerUserDTO,
+  resetPasswordDTO,
   verifyOTPDTO
 } from './auth.dto';
 import { UserService } from '../user/user.service';
@@ -148,6 +149,24 @@ export class AuthService {
       statusCode: 200,
       message:
         'A password reset email has been sent to your email address. Please check your inbox.'
+    };
+  }
+
+  async resetPassword(@Body() request: resetPasswordDTO) {
+    const { id, password } = request;
+
+    const userExists = await this.userService.findById(id);
+
+    if (!userExists)
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+
+    const hashedPassword = await hashInformation(password);
+
+    await this.userRepository.update(id, { password: hashedPassword });
+
+    return {
+      statusCode: 200,
+      message: 'Password updated successfully.'
     };
   }
 
