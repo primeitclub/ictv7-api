@@ -53,8 +53,8 @@ export class AuthController {
     return await this.authService.verifyOTP(request);
   }
 
-  @Post('reset-password/:id/:token')
-  handleResetPassword(@Body() request: resetPasswordDTO) {
-    console.log(request);
+  @Post('reset-password')
+  async handleResetPassword(@Body() request: resetPasswordDTO) {
+    return await this.authService.resetPassword(request);
   }
 }

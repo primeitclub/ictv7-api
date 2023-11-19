@@ -79,21 +79,9 @@ export class resetPasswordDTO {
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'Token field is required.'
-  })
-  token: string;
-
-  @ApiProperty()
-  @IsNotEmpty({
     message: 'Password field is required.'
   })
   password: string;
-
-  @ApiProperty()
-  @IsNotEmpty({
-    message: 'Password confirmation field is required.'
-  })
-  passwordConfirmation: string;
 }
 
 export class sendOTPVerificationMailDTO {
