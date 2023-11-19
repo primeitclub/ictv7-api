@@ -63,6 +63,12 @@ export class AuthService {
 
     if (user) {
       await this.sendOTPVerificationMail(user.email);
+
+      return {
+        statusCode: 200,
+        message:
+          'Verification mail has been sent to your email address. Please check your inbox.'
+      };
     }
   }
 
@@ -141,14 +147,12 @@ export class AuthService {
     if (!checkUserExists)
       throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
 
-    const content = 'You dumb ass. You forgot your password?';
-
-    await this.mailService.sendEmail(email, 'Forgot password email.', content);
+    await this.sendOTPVerificationMail(email);
 
     return {
       statusCode: 200,
       message:
-        'A password reset email has been sent to your email address. Please check your inbox.'
+        'Verification mail has been sent to your email address. Please check your inbox.'
     };
   }
 
