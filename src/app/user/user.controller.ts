@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 
@@ -11,7 +11,7 @@ export class UserController {
   async handleGetAllUsers() {
     const users = await this.userService.getAllUsers();
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       message: 'List of all users',
       users
     };

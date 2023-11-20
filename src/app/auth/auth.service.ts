@@ -65,7 +65,7 @@ export class AuthService {
       await this.sendOTPVerificationMail(user.email);
 
       return {
-        statusCode: 200,
+        statusCode: HttpStatus.OK,
         message:
           'Verification mail has been sent to your email address. Please check your inbox.'
       };
@@ -92,7 +92,7 @@ export class AuthService {
         email: checkUserExists.email
       });
       return {
-        statusCode: 200,
+        statusCode: HttpStatus.OK,
         message: 'You have been logged in successfully.',
         accessToken
       };
@@ -130,7 +130,7 @@ export class AuthService {
 
       if (user) {
         return {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           message: 'You have been registered successfully.',
           accessToken,
           refreshToken
@@ -150,7 +150,7 @@ export class AuthService {
     await this.sendOTPVerificationMail(email);
 
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       message:
         'Verification mail has been sent to your email address. Please check your inbox.'
     };
@@ -169,7 +169,7 @@ export class AuthService {
     await this.userRepository.update(id, { password: hashedPassword });
 
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       message: 'Password updated successfully.'
     };
   }
@@ -193,7 +193,7 @@ export class AuthService {
     await this.mailService.sendEmail(email, 'Verify your email', content);
 
     return {
-      statusCode: 200,
+      statusCode: HttpStatus.OK,
       message:
         'Verification mail has been sent to your email address. Please check your inbox.'
     };
@@ -224,7 +224,7 @@ export class AuthService {
       await this.userRepository.update(id, { verified: true });
 
       return {
-        statusCode: 200,
+        statusCode: HttpStatus.OK,
         message: 'Your email has been verified successfully.'
       };
     } else {
