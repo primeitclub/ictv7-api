@@ -86,15 +86,17 @@ export class AuthService {
     );
 
     if (checkPassword) {
-      const accessToken = this.jwtService.sign({
+      const payload = {
         sub: checkUserExists.id,
         name: checkUserExists.username,
         email: checkUserExists.email
-      });
+      };
+
       return {
         statusCode: HttpStatus.OK,
         message: 'You have been logged in successfully.',
-        accessToken
+        accessToken: this.jwtService.sign(payload),
+        refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' })
       };
     } else {
       throw new HttpException(
