@@ -21,6 +21,7 @@ import { OTP } from '../user/model/Otp.entity';
 import { Repository } from 'typeorm';
 import calculateExpirationDate from 'src/utils/date.util';
 import { User } from '../user/model/User.entity';
+import { jwt } from 'src/config/env';
 
 @Injectable()
 export class AuthService {
@@ -97,7 +98,10 @@ export class AuthService {
         statusCode: HttpStatus.OK,
         message: 'You have been logged in successfully.',
         accessToken: this.jwtService.sign(payload),
-        refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' })
+        refreshToken: this.jwtService.sign(payload, {
+          secret: jwt.rtSecretKey,
+          expiresIn: '7d'
+        })
       };
     } else {
       throw new HttpException(
@@ -236,7 +240,12 @@ export class AuthService {
   }
 
   async refreshToken(request: refreshTokenDTO) {
-    const decodedUser = await this.jwtService.decode(request.refreshToken);
+    const decodedUser = await this.jwtService.verifyAsync(
+      request.refreshToken,
+      {
+        secret: jwt.rtSecretKey
+      }
+    );
 
     const payload = {
       userId: decodedUser.id,
