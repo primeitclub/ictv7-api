@@ -1,24 +1,29 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn
+} from 'typeorm';
+import { Album } from './Album.entity';
 
-@Entity()
+@Entity('photos')
 export class Photos {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar' })
-  name: string;
+  photo: string;
 
-  @Column({ type: 'varchar' })
-  description: string;
+  @CreateDateColumn()
+  createdAt: Date;
 
-  @Column({ type: 'varchar', name: 'company_name' })
-  companyName: string;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-  @Column({ type: 'varchar' })
-  image: string;
-  @Column({ type: 'varchar' })
-  thumbnail: string;
-
-  @Column({ type: 'varchar' })
-  album: string;
+  @ManyToOne(() => Album, (album) => album.photos)
+  @JoinColumn({ name: 'albumID' })
+  album: Album;
 }
