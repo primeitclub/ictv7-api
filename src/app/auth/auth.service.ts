@@ -2,6 +2,7 @@ import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import {
   forgotPasswordDTO,
   loginUserDTO,
+  refreshTokenDTO,
   registerUserDTO,
   resetPasswordDTO,
   verifyOTPDTO
@@ -87,7 +88,7 @@ export class AuthService {
 
     if (checkPassword) {
       const payload = {
-        sub: checkUserExists.id,
+        userId: checkUserExists.id,
         name: checkUserExists.username,
         email: checkUserExists.email
       };
@@ -232,5 +233,21 @@ export class AuthService {
     } else {
       throw new HttpException('OTP not found.', HttpStatus.NOT_FOUND);
     }
+  }
+
+  async refreshToken(request: refreshTokenDTO) {
+    const decodedUser = await this.jwtService.decode(request.refreshToken);
+
+    const payload = {
+      userId: decodedUser.id,
+      name: decodedUser.username,
+      email: decodedUser.email
+    };
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Access token has been refreshed successfully.',
+      accessToken: this.jwtService.sign(payload)
+    };
   }
 }

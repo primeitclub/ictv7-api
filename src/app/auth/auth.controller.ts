@@ -60,9 +60,7 @@ export class AuthController {
     return await this.authService.resetPassword(request);
   }
   @Post('/refresh-token')
-  async handleRefreshToken(@Body() data: refreshTokenDTO) {
-    console.log(data);
-    return { message: 'refresh token.' };
-    // return await this.authService.refreshToken(req.headers);
+  async handleRefreshToken(@Body() request: refreshTokenDTO) {
+    return await this.authService.refreshToken(request);
   }
 }
