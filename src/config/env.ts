@@ -18,7 +18,8 @@ export const sessionKeys = {
 };
 
 export const jwt = {
-  secretKey: process.env.JWT_SECRET_KEY,
+  atSecretKey: process.env.JWT_AT_SECRET_KEY,
+  rtSecretKey: process.env.JWT_RT_SECRET_KEY,
   expiresIn: process.env.JWT_TOKEN_EXPIRES_IN
 };
 

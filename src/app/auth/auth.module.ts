@@ -15,7 +15,7 @@ import { OTP } from '../user/model/Otp.entity';
   imports: [
     TypeOrmModule.forFeature([User, OTP]),
     JwtModule.register({
-      secret: jwt.secretKey,
+      secret: jwt.atSecretKey,
       signOptions: {
         expiresIn: jwt.expiresIn
       }
