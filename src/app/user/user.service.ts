@@ -37,7 +37,7 @@ export class UserService {
 
   async getAllUsers() {
     return await this.userRepository.find({
-      relations: { photograph: true, events: true, esportsTeam: true }
+      relations: { events: true, esportsTeam: true }
     });
   }
 }

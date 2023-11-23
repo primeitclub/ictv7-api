@@ -6,11 +6,13 @@ import {
   forgotPasswordDTO,
   resetPasswordDTO,
   sendOTPVerificationMailDTO,
-  verifyOTPDTO
+  verifyOTPDTO,
+  refreshTokenDTO
 } from './auth.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 
+@ApiBearerAuth()
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
@@ -56,5 +58,11 @@ export class AuthController {
   @Post('reset-password')
   async handleResetPassword(@Body() request: resetPasswordDTO) {
     return await this.authService.resetPassword(request);
+  }
+  @Post('/refresh-token')
+  async handleRefreshToken(@Body() data: refreshTokenDTO) {
+    console.log(data);
+    return { message: 'refresh token.' };
+    // return await this.authService.refreshToken(req.headers);
   }
 }

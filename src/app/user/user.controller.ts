@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
@@ -11,7 +11,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('all-users')
-  async handleGetAllUsers() {
+  async handleGetAllUsers(@Req() req) {
     const users = await this.userService.getAllUsers();
     return {
       statusCode: HttpStatus.OK,
