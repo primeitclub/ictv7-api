@@ -67,6 +67,8 @@ export class AuthService {
       await this.sendOTPVerificationMail(user.email);
 
       return {
+        id: user.id,
+        email: user.email,
         statusCode: HttpStatus.OK,
         message:
           'Verification mail has been sent to your email address. Please check your inbox.'
