@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  JoinColumn,
-  OneToOne
-} from 'typeorm';
-import { User } from '../user/model/User.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Photos {
@@ -23,14 +16,9 @@ export class Photos {
 
   @Column({ type: 'varchar' })
   image: string;
+  @Column({ type: 'varchar' })
+  thumbnail: string;
 
-  @Column({ type: 'varchar', name: 'fb_profile' })
-  fbProfile: string;
-
-  @Column({ type: 'varchar', name: 'insta_profile' })
-  instaProfile: string;
-
-  @OneToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
+  @Column({ type: 'varchar' })
+  album: string;
 }

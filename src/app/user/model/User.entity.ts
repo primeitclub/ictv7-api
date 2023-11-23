@@ -64,8 +64,4 @@ export class User {
 
   @OneToMany(() => OTP, (otp) => otp.user)
   otps: OTP[];
-
-  @OneToOne(() => Photos, (photo) => photo.user)
-  @JoinColumn({ name: 'user_id' })
-  photograph: Photos;
 }

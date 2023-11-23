@@ -105,3 +105,11 @@ export class verifyOTPDTO {
   })
   otp: number;
 }
+
+export class refreshTokenDTO {
+  @ApiProperty()
+  @IsNotEmpty({
+    message: 'Refresh token field is required.'
+  })
+  refreshToken: string;
+}
