@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsPhoneNumber } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
+import { UserType } from '../user/user.enum';
 
-export class usersDto {
+export class addUsersDTO {
+  @ApiProperty()
+  @IsNotEmpty({
+    message: 'Username field is required.'
+  })
+  username: string;
+
   @ApiProperty()
   @IsNotEmpty({
     message: 'Email field is required.'
@@ -16,28 +23,33 @@ export class usersDto {
 
   @ApiProperty()
   @IsNotEmpty({
+    message: 'User Type field is required.'
+  })
+  user_type: UserType;
+}
+
+export class updateUsersDTO {
+  @ApiProperty()
+  @IsNotEmpty({
     message: 'Username field is required.'
   })
   username: string;
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'Phone number field is required.'
+    message: 'Email field is required.'
   })
-  @IsPhoneNumber('NE', {
-    message: 'Phone number must be a valid phone number.'
-  })
-  phone: string;
+  email: string;
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'Address field is required.'
+    message: 'Password field is required.'
   })
-  address: string;
+  password: string;
 
   @ApiProperty()
   @IsNotEmpty({
-    message: 'Terms and conditions field is required.'
+    message: 'User Type field is required.'
   })
-  TnCFlag: boolean;
+  user_type: UserType;
 }

@@ -1,8 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './model/User.entity';
 import { Repository } from 'typeorm';
 import { UserType } from './user.enum';
+import { addUsersDTO, updateUsersDTO } from './user.dto';
+import { hashInformation } from 'src/utils/bcrypt.util';
+import isValidUUID from 'src/utils/checkUUID.util';
 
 @Injectable()
 export class UserService {
@@ -39,5 +42,83 @@ export class UserService {
     return await this.userRepository.find({
       relations: { events: true, esportsTeam: true }
     });
+  }
+
+  async addUser(request: addUsersDTO) {
+    const { username, email, password, user_type } = request;
+
+    const userAlreadyExist = await this.findByEmail(email);
+
+    if (userAlreadyExist)
+      throw new HttpException(
+        'Email has already been taken.',
+        HttpStatus.FOUND
+      );
+
+    const hashedPassword = await hashInformation(password);
+
+    const user = await this.createUser({
+      username,
+      email,
+      phone: '+977 9876543210',
+      password: hashedPassword,
+      address: 'kathmandu',
+      user_type,
+      college_name: 'prime',
+      TnCFlag: true,
+      verified: true
+    });
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'New user added successfully.',
+      user
+    };
+  }
+
+  async updateUser(id: string, request: updateUsersDTO) {
+    const { username, email, password, user_type } = request;
+
+    if (!isValidUUID(id))
+      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
+
+    let userExist = await this.findById(id);
+
+    if (!userExist)
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+
+    const hashedPassword = await hashInformation(password);
+
+    userExist = {
+      ...userExist,
+      username,
+      email,
+      password: hashedPassword,
+      user_type
+    };
+
+    await this.userRepository.save(userExist);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User updated successfully.'
+    };
+  }
+
+  async deleteUser(id: string) {
+    if (!isValidUUID(id))
+      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
+
+    const userExist = await this.findById(id);
+
+    if (!userExist)
+      throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+
+    await this.userRepository.delete({ id });
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User deleted successfully.'
+    };
   }
 }
