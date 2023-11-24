@@ -19,4 +19,15 @@ export class UserController {
       users
     };
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('my-profile')
+  async handleMyProfile(@Req() req) {
+    const user = req.user;
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User details fetched successfully.',
+      user
+    };
+  }
 }
