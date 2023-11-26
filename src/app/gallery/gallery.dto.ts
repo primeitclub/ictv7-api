@@ -13,12 +13,6 @@ export class createGalleryDTO {
     message: 'Slug field is required.'
   })
   slug: string;
-
-  @ApiProperty()
-  @IsNotEmpty({
-    message: 'Thumbnail is required.'
-  })
-  thumbnail: string;
 }
 
 export class updateGalleryDTO {
@@ -33,10 +27,4 @@ export class updateGalleryDTO {
     message: 'Slug field is required.'
   })
   slug: string;
-
-  @ApiProperty()
-  @IsNotEmpty({
-    message: 'Thumbnail is required.'
-  })
-  thumbnail: string;
 }

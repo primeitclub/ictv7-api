@@ -24,7 +24,7 @@ export class GalleryService {
     };
   }
 
-  async createAlbum(request: createGalleryDTO) {
+  async createAlbum(request: createGalleryDTO, file: any) {
     const { slug } = request;
 
     const slugAlreadyInUse = await this.albumRepository.findOne({
@@ -34,7 +34,10 @@ export class GalleryService {
     if (slugAlreadyInUse)
       throw new HttpException('Slug is already in use.', HttpStatus.FOUND);
 
-    const album = await this.albumRepository.save(request);
+    const album = await this.albumRepository.save({
+      ...request,
+      thumbnail: file.path
+    });
 
     return {
       statusCode: HttpStatus.OK,
@@ -43,8 +46,8 @@ export class GalleryService {
     };
   }
 
-  async updateAlbum(id: string, request: updateGalleryDTO) {
-    const { title, slug, thumbnail } = request;
+  async updateAlbum(id: string, request: updateGalleryDTO, file: any) {
+    const { title, slug } = request;
     if (!isValidUUID(id))
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
 
@@ -57,7 +60,7 @@ export class GalleryService {
       ...albumExists,
       title,
       slug,
-      thumbnail
+      thumbnail: file.path
     };
 
     const updatedAlbum = await this.albumRepository.save(albumExists);
