@@ -121,4 +121,40 @@ export class GalleryController {
   async handleDeleteAlbum(@Param('id') id: string) {
     return this.galleryService.deleteAlbum(id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      title: 'uploadPhotoDTO',
+      required: ['file'],
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary'
+        }
+      }
+    }
+  })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/photos',
+        filename: (req, file, cb) => {
+          const uniqueSuffix = uuidv4();
+          const fileExtension = file.originalname.split('.').pop();
+          const fileName = `${uniqueSuffix}.${fileExtension}`;
+          cb(null, fileName);
+        }
+      })
+    })
+  )
+  @Post('albums/:slug/photos')
+  async handlePhotoUpload(
+    @Param('slug') slug: string,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+    return this.galleryService.uploadPhoto(slug, file);
+  }
 }

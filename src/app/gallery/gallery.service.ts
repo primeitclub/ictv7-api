@@ -4,12 +4,16 @@ import { Album } from './Album.entity';
 import { Repository } from 'typeorm';
 import { createGalleryDTO, updateGalleryDTO } from './gallery.dto';
 import isValidUUID from 'src/utils/checkUUID.util';
+import { Photos } from './Photos.entity';
 
 @Injectable()
 export class GalleryService {
   constructor(
     @InjectRepository(Album)
-    private albumRepository: Repository<Album>
+    private albumRepository: Repository<Album>,
+
+    @InjectRepository(Photos)
+    private photoRepository: Repository<Photos>
   ) {}
 
   async getAlbums() {
@@ -86,6 +90,27 @@ export class GalleryService {
     return {
       statusCode: HttpStatus.OK,
       message: 'Album deleted successfully.'
+    };
+  }
+
+  async uploadPhoto(slug: string, file: any) {
+    const albumExists = await this.albumRepository.findOne({
+      where: { slug },
+      relations: ['photos']
+    });
+
+    if (!albumExists)
+      throw new HttpException('Album not found.', HttpStatus.NOT_FOUND);
+
+    const photo = await this.photoRepository.save({
+      photo: file.path,
+      album: albumExists
+    });
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Photo uploaded successfully.',
+      photo
     };
   }
 }
