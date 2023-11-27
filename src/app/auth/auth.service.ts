@@ -46,7 +46,7 @@ export class AuthService {
     if (userAlreadyExist)
       throw new HttpException(
         'Email has already been taken.',
-        HttpStatus.FOUND
+        HttpStatus.CONFLICT
       );
 
     const hashedPassword = await hashInformation(password);
@@ -121,7 +121,7 @@ export class AuthService {
     if (checkUserExists)
       throw new HttpException(
         'Email has already been taken.',
-        HttpStatus.FOUND
+        HttpStatus.CONFLICT
       );
 
     if (!checkUserExists) {

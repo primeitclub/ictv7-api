@@ -36,7 +36,7 @@ export class GalleryService {
     });
 
     if (slugAlreadyInUse)
-      throw new HttpException('Slug is already in use.', HttpStatus.FOUND);
+      throw new HttpException('Slug is already in use.', HttpStatus.CONFLICT);
 
     const album = await this.albumRepository.save({
       ...request,
