@@ -12,7 +12,7 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt.guard';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
 import { createGalleryDTO, updateGalleryDTO } from './gallery.dto';
 import { GalleryService } from './gallery.service';
 import { FileInterceptor } from '@nestjs/platform-express';

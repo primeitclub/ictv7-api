@@ -6,14 +6,13 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
-  OneToMany,
-  OneToOne
+  OneToMany
 } from 'typeorm';
 import { OTP } from './Otp.entity';
 import { Event } from 'src/app/events/models/Event.entity';
 import { UserType } from '../user.enum';
 import { EsportsTeam } from 'src/app/esports/models/EsportsTeam.entity';
-import { Photos } from 'src/app/gallery/Photos.entity';
+// import { Photos } from 'src/app/gallery/Photos.entity';
 
 @Entity({ name: 'users' })
 export class User {

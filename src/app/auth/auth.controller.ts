@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { GoogleOAuthGuard } from './google-oauth.guard';
+import { GoogleOAuthGuard } from './guard/google-oauth.guard';
 import {
   registerUserDTO,
   loginUserDTO,

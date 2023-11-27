@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
-import { GoogleStrategy } from './google.strategy';
+import { GoogleStrategy } from './strategy/google.strategy';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/model/User.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwt } from 'src/config/env';
-import { JwtStratgegy } from './jwt.strategy';
+import { JwtStratgegy } from './strategy/jwt.strategy';
 import { MailService } from 'src/mail/mail.service';
 import { OTP } from '../user/model/Otp.entity';
 

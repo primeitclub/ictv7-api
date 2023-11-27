@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Album } from './Album.entity';
+import { Album } from './model/Album.entity';
 import { Repository } from 'typeorm';
 import { createGalleryDTO, updateGalleryDTO } from './gallery.dto';
 import isValidUUID from 'src/utils/checkUUID.util';
-import { Photos } from './Photos.entity';
+import { Photos } from './model/Photos.entity';
 
 @Injectable()
 export class GalleryService {
