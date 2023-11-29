@@ -16,7 +16,7 @@ import { EsportsTeam } from 'src/app/esports/models/EsportsTeam.entity';
 
 @Entity({ name: 'users' })
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({
