@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn
 } from 'typeorm';
-import { Event } from './Event.entity';
+import { Events } from './Events.entity';
 
 @Entity()
 export class Speaker {
@@ -30,7 +30,7 @@ export class Speaker {
   @Column({ type: 'varchar', nullable: true })
   twitterURL: string;
 
-  @ManyToOne(() => Event, (event) => event.speakers)
+  @ManyToOne(() => Events, (event) => event.speakers)
   @JoinColumn({ name: 'eventId' })
   event: Event;
 }

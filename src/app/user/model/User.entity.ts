@@ -9,7 +9,7 @@ import {
   OneToMany
 } from 'typeorm';
 import { OTP } from './Otp.entity';
-import { Event } from 'src/app/events/models/Event.entity';
+import { Events } from 'src/app/events/models/Events.entity';
 import { UserType } from '../user.enum';
 import { EsportsTeam } from 'src/app/esports/models/EsportsTeam.entity';
 // import { Photos } from 'src/app/gallery/Photos.entity';
@@ -53,7 +53,7 @@ export class User {
   @JoinColumn({ name: 'esports-team-id' })
   esportsTeam: EsportsTeam;
 
-  @ManyToMany(() => Event, (event) => event.users)
+  @ManyToMany(() => Events, (event) => event.users)
   @JoinTable({
     name: 'user_events',
     joinColumn: { name: 'user_id', referencedColumnName: 'id' },

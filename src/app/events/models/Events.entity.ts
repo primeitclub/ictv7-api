@@ -6,38 +6,44 @@ import {
   ManyToMany,
   OneToMany
 } from 'typeorm';
-// import { Speaker } from './Speaker.model';
 import { User } from '../../user/model/User.entity';
 import { Speaker } from './Speaker.entity';
+import { EventType } from '../events.enum';
 
-@Entity()
-export class Event {
-  @PrimaryGeneratedColumn()
-  id: number;
+@Entity('events')
+export class Events {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar' })
   name: string;
+
+  @Column({ type: 'enum', enum: EventType })
+  eventType: EventType;
+
+  @Column({ type: 'varchar' })
+  eventThumbnail: string;
+
+  @Column({ type: 'varchar' })
+  description: string;
 
   @Column({ type: 'varchar' })
   location: string;
 
   @Column({ type: 'varchar' })
-  room_no: string;
-
-  @Column({ type: 'varchar' })
   floor: string;
 
   @Column({ type: 'varchar' })
-  description: string;
+  roomNo: string;
 
-  @Column({ type: 'enum', enum: ['workshop', 'session', 'panel discussion'] })
-  event_type: 'workshop' | 'session' | 'panel discussion';
+  @Column({ type: 'timestamp', array: true })
+  eventDate: [];
 
-  @Column({ type: 'timestamp' })
-  start_time: Date;
+  @Column({ type: 'timestamp', array: true })
+  startTime: [];
 
-  @Column({ type: 'timestamp' })
-  end_time: Date;
+  @Column({ type: 'timestamp', array: true })
+  endTime: [];
 
   @OneToMany(() => Speaker, (speaker) => speaker.event)
   speakers: Speaker[];
