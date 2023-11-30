@@ -2,10 +2,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
   JoinTable,
-  ManyToMany
+  ManyToMany,
+  OneToMany
 } from 'typeorm';
 // import { Speaker } from './Speaker.model';
 import { User } from '../../user/model/User.entity';
@@ -40,9 +39,8 @@ export class Event {
   @Column({ type: 'timestamp' })
   end_time: Date;
 
-  @ManyToOne(() => Speaker)
-  @JoinColumn({ name: 'speaker_id' })
-  speaker: Speaker;
+  @OneToMany(() => Speaker, (speaker) => speaker.event)
+  speakers: Speaker[];
 
   @ManyToMany(() => User, (user) => user.events)
   @JoinTable({

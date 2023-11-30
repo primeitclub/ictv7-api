@@ -1,25 +1,36 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn
+} from 'typeorm';
+import { Event } from './Event.entity';
 
 @Entity()
 export class Speaker {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar' })
   name: string;
 
   @Column({ type: 'varchar' })
-  description: string;
+  bio: string;
 
-  @Column({ type: 'varchar' })
-  company_name: string;
+  @Column({ type: 'varchar', nullable: true })
+  companyName: string;
 
   @Column({ type: 'varchar' })
   image: string;
 
-  @Column({ type: 'varchar' })
-  linkedin_profile: string;
+  @Column({ type: 'varchar', nullable: true })
+  linkedInURL: string;
 
-  @Column({ type: 'varchar' })
-  twitter_profile: string;
+  @Column({ type: 'varchar', nullable: true })
+  twitterURL: string;
+
+  @ManyToOne(() => Event, (event) => event.speakers)
+  @JoinColumn({ name: 'eventId' })
+  event: Event;
 }
