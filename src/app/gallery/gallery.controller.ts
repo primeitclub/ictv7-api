@@ -16,8 +16,6 @@ import { JwtAuthGuard } from '../auth/guard/jwt.guard';
 import { createGalleryDTO, updateGalleryDTO } from './gallery.dto';
 import { GalleryService } from './gallery.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { v4 as uuidv4 } from 'uuid';
 
 @ApiBearerAuth()
 @ApiTags('Gallery')
@@ -52,19 +50,7 @@ export class GalleryController {
       }
     }
   })
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/thumbnails',
-        filename: (req, file, cb) => {
-          const uniqueSuffix = uuidv4();
-          const fileExtension = file.originalname.split('.').pop();
-          const fileName = `${uniqueSuffix}.${fileExtension}`;
-          cb(null, fileName);
-        }
-      })
-    })
-  )
+  @UseInterceptors(FileInterceptor('file'))
   @Post('albums')
   async handleCreateAlbum(
     @UploadedFile() file: Express.Multer.File,
@@ -94,19 +80,7 @@ export class GalleryController {
       }
     }
   })
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/thumbnails',
-        filename: (req, file, cb) => {
-          const uniqueSuffix = uuidv4();
-          const fileExtension = file.originalname.split('.').pop();
-          const fileName = `${uniqueSuffix}.${fileExtension}`;
-          cb(null, fileName);
-        }
-      })
-    })
-  )
+  @UseInterceptors(FileInterceptor('file'))
   @Put('albums/:id')
   async handleUpdateAlbum(
     @UploadedFile() file: Express.Multer.File,
@@ -137,19 +111,7 @@ export class GalleryController {
       }
     }
   })
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/photos',
-        filename: (req, file, cb) => {
-          const uniqueSuffix = uuidv4();
-          const fileExtension = file.originalname.split('.').pop();
-          const fileName = `${uniqueSuffix}.${fileExtension}`;
-          cb(null, fileName);
-        }
-      })
-    })
-  )
+  @UseInterceptors(FileInterceptor('file'))
   @Post('albums/:slug/photos')
   async handlePhotoUpload(
     @Param('slug') slug: string,
