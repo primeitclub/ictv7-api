@@ -36,13 +36,13 @@ export class Events {
   @Column({ type: 'varchar' })
   roomNo: string;
 
-  @Column({ type: 'timestamp', array: true })
+  @Column({ nullable: true, type: 'timestamp', array: true })
   eventDate: [];
 
-  @Column({ type: 'timestamp', array: true })
+  @Column({ nullable: true, type: 'timestamp', array: true })
   startTime: [];
 
-  @Column({ type: 'timestamp', array: true })
+  @Column({ nullable: true, type: 'timestamp', array: true })
   endTime: [];
 
   @OneToMany(() => Speaker, (speaker) => speaker.event)
