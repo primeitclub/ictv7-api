@@ -71,6 +71,9 @@ export class EventsController {
         roomNo: {
           type: 'string'
         },
+        totalSeats: {
+          type: 'number'
+        },
         eventDate: {
           type: 'string'
         },
@@ -89,7 +92,10 @@ export class EventsController {
     @UploadedFile() eventThumbnail: Express.Multer.File,
     @Body() requestBody
   ) {
-    return await this.eventsService.createEvent(requestBody, eventThumbnail);
+    return await this.eventsService.createEvent(
+      requestBody,
+      eventThumbnail.path
+    );
   }
 
   @ApiConsumes('multipart/form-data')
@@ -120,6 +126,9 @@ export class EventsController {
         roomNo: {
           type: 'string'
         },
+        totalSeats: {
+          type: 'number'
+        },
         eventDate: {
           type: 'string'
         },
@@ -142,7 +151,7 @@ export class EventsController {
     return await this.eventsService.updateEvent(
       id,
       requestBody,
-      eventThumbnail
+      eventThumbnail.path
     );
   }
 

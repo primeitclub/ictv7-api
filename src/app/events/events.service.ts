@@ -49,6 +49,7 @@ export class EventsService {
       location,
       floor,
       roomNo,
+      totalSeats,
       eventDate,
       startTime,
       endTime
@@ -58,10 +59,11 @@ export class EventsService {
       name,
       eventType,
       description,
+      eventThumbnail,
       location,
       floor,
       roomNo,
-      eventThumbnail,
+      totalSeats,
       eventDate,
       startTime,
       endTime
@@ -82,6 +84,7 @@ export class EventsService {
       location,
       floor,
       roomNo,
+      totalSeats,
       eventDate,
       startTime,
       endTime
@@ -106,6 +109,7 @@ export class EventsService {
       location,
       floor,
       roomNo,
+      totalSeats,
       eventDate,
       startTime,
       endTime
