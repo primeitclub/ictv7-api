@@ -28,7 +28,7 @@ export class GalleryService {
     };
   }
 
-  async createAlbum(request: createGalleryDTO, file: any) {
+  async createAlbum(request: createGalleryDTO, thumbnail: any) {
     const { slug } = request;
 
     const slugAlreadyInUse = await this.albumRepository.findOne({
@@ -40,7 +40,7 @@ export class GalleryService {
 
     const album = await this.albumRepository.save({
       ...request,
-      thumbnail: file.path
+      thumbnail
     });
 
     return {
@@ -50,7 +50,7 @@ export class GalleryService {
     };
   }
 
-  async updateAlbum(id: string, request: updateGalleryDTO, file: any) {
+  async updateAlbum(id: string, request: updateGalleryDTO, thumbnail: any) {
     const { title, slug } = request;
     if (!isValidUUID(id))
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
@@ -64,7 +64,7 @@ export class GalleryService {
       ...albumExists,
       title,
       slug,
-      thumbnail: file.path
+      thumbnail
     };
 
     const updatedAlbum = await this.albumRepository.save(albumExists);
@@ -93,7 +93,7 @@ export class GalleryService {
     };
   }
 
-  async uploadPhoto(slug: string, file: any) {
+  async uploadPhoto(slug: string, photo: any) {
     const albumExists = await this.albumRepository.findOne({
       where: { slug },
       relations: ['photos']
@@ -102,15 +102,15 @@ export class GalleryService {
     if (!albumExists)
       throw new HttpException('Album not found.', HttpStatus.NOT_FOUND);
 
-    const photo = await this.photoRepository.save({
-      photo: file.path,
+    const uploadedPhoto = await this.photoRepository.save({
+      photo: photo,
       album: albumExists
     });
 
     return {
       statusCode: HttpStatus.OK,
       message: 'Photo uploaded successfully.',
-      photo
+      uploadedPhoto
     };
   }
 }

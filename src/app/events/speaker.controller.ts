@@ -69,10 +69,7 @@ export class SpeakerController {
     @UploadedFile() imageUrl: Express.Multer.File,
     @Body() request
   ) {
-    console.log(imageUrl);
-    console.log(request);
-
-    return this.speakerService.createSpeaker(request, imageUrl);
+    return this.speakerService.createSpeaker(request, imageUrl.path);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -111,7 +108,7 @@ export class SpeakerController {
     @Param('id') id: string,
     @Body() request
   ) {
-    return this.speakerService.updateSpeaker(id, request, imageUrl);
+    return this.speakerService.updateSpeaker(id, request, imageUrl.path);
   }
 
   @Delete('/:id')

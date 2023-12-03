@@ -35,7 +35,7 @@ export class GalleryController {
     schema: {
       type: 'object',
       title: 'createAlbumDTO',
-      required: ['title', 'slug', 'file'],
+      required: ['title', 'slug', 'thumbnail'],
       properties: {
         title: {
           type: 'string'
@@ -43,20 +43,21 @@ export class GalleryController {
         slug: {
           type: 'string'
         },
-        file: {
+        thumbnail: {
           type: 'string',
           format: 'binary'
         }
       }
     }
   })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('thumbnail'))
   @Post('albums')
   async handleCreateAlbum(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() request: createGalleryDTO
+    @Body() request: createGalleryDTO,
+    @UploadedFile() thumbnail: Express.Multer.File
   ) {
-    return this.galleryService.createAlbum(request, file);
+    console.log(thumbnail);
+    return this.galleryService.createAlbum(request, thumbnail.path);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -65,7 +66,7 @@ export class GalleryController {
     schema: {
       type: 'object',
       title: 'updateAlbumDTO',
-      required: ['title', 'slug', 'file'],
+      required: ['title', 'slug', 'thumbnail'],
       properties: {
         title: {
           type: 'string'
@@ -73,21 +74,21 @@ export class GalleryController {
         slug: {
           type: 'string'
         },
-        file: {
+        thumbnail: {
           type: 'string',
           format: 'binary'
         }
       }
     }
   })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('thumbnail'))
   @Put('albums/:id')
   async handleUpdateAlbum(
-    @UploadedFile() file: Express.Multer.File,
     @Param('id') id: string,
-    @Req() request: updateGalleryDTO
+    @Req() request: updateGalleryDTO,
+    @UploadedFile() thumbnail: Express.Multer.File
   ) {
-    return this.galleryService.updateAlbum(id, request, file);
+    return this.galleryService.updateAlbum(id, request, thumbnail.path);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -102,21 +103,21 @@ export class GalleryController {
     schema: {
       type: 'object',
       title: 'uploadPhotoDTO',
-      required: ['file'],
+      required: ['photo'],
       properties: {
-        file: {
+        photo: {
           type: 'string',
           format: 'binary'
         }
       }
     }
   })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('thumbnail'))
   @Post('albums/:slug/photos')
   async handlePhotoUpload(
     @Param('slug') slug: string,
-    @UploadedFile() file: Express.Multer.File
+    @UploadedFile() photo: Express.Multer.File
   ) {
-    return this.galleryService.uploadPhoto(slug, file);
+    return this.galleryService.uploadPhoto(slug, photo.path);
   }
 }
