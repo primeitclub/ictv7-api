@@ -42,31 +42,18 @@ export class EventsService {
   }
 
   async createEvent(request, eventThumbnail) {
-    const {
-      name,
-      eventType,
-      description,
-      location,
-      floor,
-      roomNo,
-      totalSeats,
-      eventDate,
-      startTime,
-      endTime
-    } = request;
+    const { slug } = request;
+
+    const slugAlreadyInUse = await this.eventRepository.findOne({
+      where: { slug }
+    });
+
+    if (slugAlreadyInUse)
+      throw new HttpException('Slug is already in use.', HttpStatus.CONFLICT);
 
     const event = await this.eventRepository.save({
-      name,
-      eventType,
-      description,
-      eventThumbnail,
-      location,
-      floor,
-      roomNo,
-      totalSeats,
-      eventDate,
-      startTime,
-      endTime
+      ...request,
+      eventThumbnail
     });
 
     return {
@@ -76,9 +63,10 @@ export class EventsService {
     };
   }
 
-  async updateEvent(id: string, request, eventThumbnail) {
+  async updateEvent(id: string, request, eventThumbnail?: any) {
     const {
-      name,
+      title,
+      slug,
       eventType,
       description,
       location,
@@ -102,7 +90,8 @@ export class EventsService {
 
     eventExists = {
       ...eventExists,
-      name,
+      title,
+      slug,
       eventType,
       description,
       eventThumbnail,

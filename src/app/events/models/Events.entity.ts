@@ -16,7 +16,10 @@ export class Events {
   id: string;
 
   @Column({ type: 'varchar' })
-  name: string;
+  title: string;
+
+  @Column({ type: 'varchar', unique: true })
+  slug: string;
 
   @Column({ type: 'enum', enum: EventType })
   eventType: EventType;

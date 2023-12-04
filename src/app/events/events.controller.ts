@@ -40,7 +40,8 @@ export class EventsController {
       type: 'object',
       title: 'createEventDTO',
       required: [
-        'name',
+        'title',
+        'slug',
         'eventType',
         'eventThumbnail',
         'description',
@@ -49,7 +50,10 @@ export class EventsController {
         'roomNo'
       ],
       properties: {
-        name: {
+        title: {
+          type: 'string'
+        },
+        slug: {
           type: 'string'
         },
         eventType: {
@@ -104,7 +108,10 @@ export class EventsController {
       type: 'object',
       title: 'updateEventDTO',
       properties: {
-        name: {
+        title: {
+          type: 'string'
+        },
+        slug: {
           type: 'string'
         },
         eventType: {
