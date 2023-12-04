@@ -3,12 +3,16 @@ import { Repository } from 'typeorm';
 import { Events } from './models/Events.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import isValidUUID from 'src/utils/checkUUID.util';
+import { User } from '../user/model/User.entity';
 
 @Injectable()
 export class EventsService {
   constructor(
     @InjectRepository(Events)
-    private eventRepository: Repository<Events>
+    private eventRepository: Repository<Events>,
+
+    @InjectRepository(User)
+    private userRepository: Repository<User>
   ) {}
 
   async getAllEvents() {
@@ -123,5 +127,40 @@ export class EventsService {
       statusCode: HttpStatus.OK,
       message: 'Event deleted successfully.'
     };
+  }
+
+  async registerToEvent(slug: string, userId: string) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId }
+    });
+    if (!user) throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+
+    const event = await this.eventRepository.findOne({
+      where: { slug },
+      relations: { users: true }
+    });
+    if (!event)
+      throw new HttpException('Event not found.', HttpStatus.NOT_FOUND);
+
+    const isRegistered = event?.users?.some(
+      (registeredUser) => registeredUser.id === userId
+    );
+    if (isRegistered)
+      throw new HttpException(
+        'User is already registered for the event.',
+        HttpStatus.CONFLICT
+      );
+
+    event?.users?.push(user);
+    await this.eventRepository.save(event);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User registered for the event successfully.'
+    };
+  }
+
+  async unRegisterFromEvent(slug: string, userId: string) {
+    // TODO: user unregistration
   }
 }

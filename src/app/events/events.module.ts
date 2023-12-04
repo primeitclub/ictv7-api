@@ -8,10 +8,11 @@ import { SpeakerController } from './speaker.controller';
 import { SpeakerService } from './speaker.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { multerConfig } from 'src/config/multer.config';
+import { User } from '../user/model/User.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Events, Speaker]),
+    TypeOrmModule.forFeature([Events, Speaker, User]),
     MulterModule.register(multerConfig)
   ],
   controllers: [EventsController, SpeakerController],

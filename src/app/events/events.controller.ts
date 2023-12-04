@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors
@@ -166,5 +167,17 @@ export class EventsController {
   @Delete('/:id')
   async handleDeleteEvent(@Param('id') id: string) {
     return await this.eventsService.deleteEvent(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/:slug/register')
+  async handleRegisterToEvent(@Req() req, @Param('slug') slug: string) {
+    return await this.eventsService.registerToEvent(slug, req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/:slug/unregister')
+  async handleUnRegisterFromEvent(@Req() req, @Param('slug') slug: string) {
+    return await this.eventsService.unRegisterFromEvent(slug, req.user.id);
   }
 }
