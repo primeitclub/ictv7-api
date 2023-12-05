@@ -61,4 +61,14 @@ export class UserController {
   async handleDelete(@Param('id') id: string) {
     return this.userService.deleteUser(id);
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('/isAdmin')
+  async handleIsAdmin(@Req() req) {
+    const user = req.user;
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User details fetched successfully.',
+      userType: user.user_type
+    };
+  }
 }

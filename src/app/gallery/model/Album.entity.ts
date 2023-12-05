@@ -28,6 +28,6 @@ export class Album {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Photos, (photos) => photos.album)
+  @OneToMany(() => Photos, (photo) => photo.album)
   photos: Photos[];
 }
