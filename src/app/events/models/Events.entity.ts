@@ -2,9 +2,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  JoinTable,
-  ManyToMany,
-  OneToMany
+  OneToMany,
+  ManyToOne,
+  JoinColumn
 } from 'typeorm';
 import { User } from '../../user/model/User.entity';
 import { Speaker } from './Speaker.entity';
@@ -54,11 +54,30 @@ export class Events {
   @OneToMany(() => Speaker, (speaker) => speaker.event)
   speakers: Speaker[];
 
-  @ManyToMany(() => User, (user) => user.events)
-  @JoinTable({
-    name: 'user_events',
-    joinColumn: { name: 'event_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' }
-  })
-  users: User[];
+  //   @ManyToMany(() => User, (user) => user.events)
+  //   @JoinTable({
+  //     name: 'user_events',
+  //     joinColumn: { name: 'event_id', referencedColumnName: 'id' },
+  //     inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' }
+  //   })
+  //   users: User[];
+  @OneToMany(
+    () => EventParticipants,
+    (eventParticipants) => eventParticipants.event
+  )
+  users: EventParticipants[];
+}
+
+@Entity('EventParticipants')
+export class EventParticipants {
+  @PrimaryGeneratedColumn()
+  id: string;
+
+  @ManyToOne(() => Events, (event) => event.users)
+  @JoinColumn({ name: 'event_id' })
+  event: Events;
+
+  @ManyToOne(() => User, (user) => user.events)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

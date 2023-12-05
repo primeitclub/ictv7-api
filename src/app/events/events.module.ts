@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { EventsController } from './events.controller';
 import { EventsService } from './events.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Events } from './models/Events.entity';
+import { EventParticipants, Events } from './models/Events.entity';
 import { Speaker } from './models/Speaker.entity';
 import { SpeakerController } from './speaker.controller';
 import { SpeakerService } from './speaker.service';
@@ -12,7 +12,7 @@ import { User } from '../user/model/User.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Events, Speaker, User]),
+    TypeOrmModule.forFeature([Events, Speaker, User, EventParticipants]),
     MulterModule.register(multerConfig)
   ],
   controllers: [EventsController, SpeakerController],

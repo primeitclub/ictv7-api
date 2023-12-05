@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Events } from './models/Events.entity';
+import { EventParticipants, Events } from './models/Events.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import isValidUUID from 'src/utils/checkUUID.util';
 import { User } from '../user/model/User.entity';
@@ -12,7 +12,9 @@ export class EventsService {
     private eventRepository: Repository<Events>,
 
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(User)
+    private eventParticipantsRepo: Repository<EventParticipants>
   ) {}
 
   async getAllEvents() {
@@ -130,29 +132,44 @@ export class EventsService {
   }
 
   async registerToEvent(slug: string, userId: string) {
-    const user = await this.userRepository.findOne({
-      where: { id: userId }
-    });
-    if (!user) throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+    // const user = await this.userRepository.findOne({
+    //   where: { id: userId }
+    // });
+    // if (!user) {
+    //   console.log(`User with ID ${userId} not found.`);
+    //   throw new HttpException('User not found.', HttpStatus.NOT_FOUND);
+    // }
 
-    const event = await this.eventRepository.findOne({
-      where: { slug },
-      relations: { users: true }
+    const event: Events = await this.eventRepository.findOne({
+      where: { slug }
     });
-    if (!event)
+    if (!event) {
+      console.log(`Event with slug ${slug} not found.`);
       throw new HttpException('Event not found.', HttpStatus.NOT_FOUND);
+    }
+    const isRegistered = await this.eventParticipantsRepo.findOne({
+      where: {
+        event: { id: event.id }
+        // user: { id: userId }
+      }
+    });
 
-    const isRegistered = event?.users?.some(
-      (registeredUser) => registeredUser.id === userId
-    );
-    if (isRegistered)
+    if (isRegistered) {
+      console.log(`User is already registered for the event.`);
       throw new HttpException(
         'User is already registered for the event.',
         HttpStatus.CONFLICT
       );
+    }
 
-    event?.users?.push(user);
-    await this.eventRepository.save(event);
+    // event?.users?.push(user);
+    // console.log(`Adding user ${user.id} to event ${event.id}`);
+    // console.log(`Current event users: ${JSON.stringify(event.users)}`);
+    await this.eventParticipantsRepo.save({
+      event,
+      user: { id: userId }
+    });
+    // await this.eventRepository.save(event);
 
     return {
       statusCode: HttpStatus.OK,
