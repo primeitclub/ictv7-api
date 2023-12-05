@@ -112,7 +112,7 @@ export class GalleryController {
       }
     }
   })
-  @UseInterceptors(FileInterceptor('thumbnail'))
+  @UseInterceptors(FileInterceptor('photo'))
   @Post('albums/:slug/photos')
   async handlePhotoUpload(
     @Param('slug') slug: string,

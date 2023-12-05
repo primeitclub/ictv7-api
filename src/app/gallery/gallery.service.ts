@@ -93,7 +93,7 @@ export class GalleryService {
     };
   }
 
-  async uploadPhoto(slug: string, photo: any) {
+  async uploadPhoto(slug: string, photo: string) {
     const albumExists = await this.albumRepository.findOne({
       where: { slug },
       relations: ['photos']
