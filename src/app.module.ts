@@ -9,6 +9,7 @@ import { EventsModule } from './app/events/events.module';
 import { UserModule } from './app/user/user.module';
 import { AuthModule } from './app/auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { TeamMemberModule } from './app/team-member/team-member.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { MailModule } from './mail/mail.module';
     EsportsModule,
     GalleryModule,
     AuthModule,
-    MailModule
+    MailModule,
+    TeamMemberModule
   ],
   controllers: [AppController],
   providers: [AppService]
