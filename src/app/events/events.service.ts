@@ -13,7 +13,7 @@ export class EventsService {
 
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(User)
+    @InjectRepository(EventParticipants)
     private eventParticipantsRepo: Repository<EventParticipants>
   ) {}
 
@@ -149,8 +149,8 @@ export class EventsService {
     }
     const isRegistered = await this.eventParticipantsRepo.findOne({
       where: {
-        event: { id: event.id }
-        // user: { id: userId }
+        event: { id: event.id },
+        user: { id: userId }
       }
     });
 
