@@ -8,13 +8,12 @@ import {
   Put,
   Req,
   UploadedFile,
-  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/jwt.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { IsPublic } from 'src/utils/decorator';
 
 @ApiBearerAuth()
 @ApiTags('Events')
@@ -22,19 +21,18 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @IsPublic()
   @Get()
   async handleGetAllEvents() {
     return await this.eventsService.getAllEvents();
   }
 
-  @UseGuards(JwtAuthGuard)
+  @IsPublic()
   @Get('/:id')
   async handleGetEvent(@Param('id') id: string) {
     return await this.eventsService.getEvent(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -163,19 +161,16 @@ export class EventsController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   async handleDeleteEvent(@Param('id') id: string) {
     return await this.eventsService.deleteEvent(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('/:slug/register')
   async handleRegisterToEvent(@Req() req, @Param('slug') slug: string) {
     return await this.eventsService.registerToEvent(slug, req.user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('/:slug/unregister')
   async handleUnRegisterFromEvent(@Req() req, @Param('slug') slug: string) {
     return await this.eventsService.unRegisterFromEvent(slug, req.user.id);

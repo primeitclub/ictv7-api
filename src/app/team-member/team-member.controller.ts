@@ -9,13 +9,12 @@ import {
   Post,
   Put,
   UploadedFile,
-  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt.guard';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { TeamMemberService } from './team-member.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { IsPublic } from 'src/utils/decorator';
 
 @ApiBearerAuth()
 @ApiTags('Team Members')
@@ -23,14 +22,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class TeamMemberController {
   constructor(private teamMemberService: TeamMemberService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @IsPublic()
   @Get()
   @HttpCode(HttpStatus.OK)
   async handleGetMembers() {
     return this.teamMemberService.getMembers();
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -61,7 +59,6 @@ export class TeamMemberController {
     return this.teamMemberService.addMember(request, image.path);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -92,7 +89,6 @@ export class TeamMemberController {
     return this.teamMemberService.updateMember(id, request, image.path);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   @HttpCode(HttpStatus.OK)
   async handleDeleteMember(@Param('id') id: string) {

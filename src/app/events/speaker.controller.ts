@@ -21,19 +21,16 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class SpeakerController {
   constructor(private speakerService: SpeakerService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async handleGetAllSpeakers() {
     return this.speakerService.getSpeakers();
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/:id')
   async handleGetSpeaker(@Param('id') id: string) {
     return this.speakerService.getSpeaker(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -72,7 +69,6 @@ export class SpeakerController {
     return this.speakerService.createSpeaker(request, imageUrl.path);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {

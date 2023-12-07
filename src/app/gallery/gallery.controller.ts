@@ -8,28 +8,25 @@ import {
   Put,
   Req,
   UploadedFile,
-  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guard/jwt.guard';
 import { createGalleryDTO, updateGalleryDTO } from './gallery.dto';
 import { GalleryService } from './gallery.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { IsPublic } from 'src/utils/decorator';
 
 @ApiBearerAuth()
 @ApiTags('Gallery')
 @Controller('gallery')
 export class GalleryController {
   constructor(private galleryService: GalleryService) {}
-
-  @UseGuards(JwtAuthGuard)
+  @IsPublic()
   @Get('albums')
   async handleGetAlbums() {
     return this.galleryService.getAlbums();
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -60,7 +57,6 @@ export class GalleryController {
     return this.galleryService.createAlbum(request, thumbnail.path);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -91,13 +87,11 @@ export class GalleryController {
     return this.galleryService.updateAlbum(id, request, thumbnail.path);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('albums/:id')
   async handleDeleteAlbum(@Param('id') id: string) {
     return this.galleryService.deleteAlbum(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -112,7 +106,7 @@ export class GalleryController {
       }
     }
   })
-  @UseInterceptors(FileInterceptor('thumbnail'))
+  @UseInterceptors(FileInterceptor('photo'))
   @Post('albums/:slug/photos')
   async handlePhotoUpload(
     @Param('slug') slug: string,

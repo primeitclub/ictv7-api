@@ -11,10 +11,12 @@ import {
 } from './auth.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
+import { IsPublic } from 'src/utils/decorator';
 
 @ApiBearerAuth()
 @ApiTags('Authentication')
 @Controller('auth')
+@IsPublic()
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -34,7 +36,6 @@ export class AuthController {
   async handleRegister(@Body() request: registerUserDTO) {
     return await this.authService.register(request);
   }
-
   @Post('login')
   async handleLogin(@Body() request: loginUserDTO) {
     return await this.authService.login(request);
@@ -59,6 +60,7 @@ export class AuthController {
   async handleResetPassword(@Body() request: resetPasswordDTO) {
     return await this.authService.resetPassword(request);
   }
+
   @Post('/refresh-token')
   async handleRefreshToken(@Body() request: refreshTokenDTO) {
     return await this.authService.refreshToken(request);

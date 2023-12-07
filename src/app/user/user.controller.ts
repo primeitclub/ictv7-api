@@ -22,7 +22,6 @@ import { addUsersDTO, updateUsersDTO } from './user.dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('all-users')
   async handleGetAllUsers(@Req() req) {
     const users = await this.userService.getAllUsers();
@@ -33,7 +32,6 @@ export class UserController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   async handleGetProfile(@Req() req) {
     const user = req.user;
@@ -44,24 +42,21 @@ export class UserController {
     };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('create')
   async handleAddUser(@Body() request: addUsersDTO) {
     return this.userService.addUser(request);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put('update/:id')
   async handleUpdate(@Param('id') id: string, @Body() request: updateUsersDTO) {
     return this.userService.updateUser(id, request);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('delete/:id')
   async handleDelete(@Param('id') id: string) {
     return this.userService.deleteUser(id);
   }
-  @UseGuards(JwtAuthGuard)
+
   @Get('/isAdmin')
   async handleIsAdmin(@Req() req) {
     const user = req.user;
