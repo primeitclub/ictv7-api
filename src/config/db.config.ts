@@ -26,6 +26,6 @@ export const typeOrmConfigs = () => {
     synchronize: true
     // driver: pg,
   };
-
+  console.log(obj);
   return obj;
 };

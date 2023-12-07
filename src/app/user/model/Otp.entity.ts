@@ -10,7 +10,7 @@ import { User } from './User.entity'; // Import the User entity
 
 @Entity()
 export class OTP {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ type: 'varchar' })
