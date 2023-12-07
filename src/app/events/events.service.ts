@@ -4,6 +4,7 @@ import { EventParticipants, Events } from './models/Events.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import isValidUUID from 'src/utils/checkUUID.util';
 import { User } from '../user/model/User.entity';
+import { ideathonTeam } from './events.dto';
 
 @Injectable()
 export class EventsService {
@@ -179,5 +180,10 @@ export class EventsService {
 
   async unRegisterFromEvent(slug: string, userId: string) {
     // TODO: user unregistration
+  }
+  async registerValorant() {}
+
+  async ideathonRegister(deatils: ideathonTeam) {
+    console.log(deatils);
   }
 }

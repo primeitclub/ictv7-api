@@ -14,6 +14,7 @@ import { EventsService } from './events.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { IsPublic } from 'src/utils/decorator';
+import { ideathonTeam } from './events.dto';
 
 @ApiBearerAuth()
 @ApiTags('Events')
@@ -27,11 +28,27 @@ export class EventsController {
     return await this.eventsService.getAllEvents();
   }
 
+  @Post('/ideathon/register')
+  async ideathon(@Body() body: ideathonTeam) {
+    return await this.eventsService.ideathonRegister(body);
+  }
+
   @IsPublic()
   @Get('/:id')
   async handleGetEvent(@Param('id') id: string) {
     return await this.eventsService.getEvent(id);
   }
+
+  //   @Post('/valorant/register')
+  //   @UseInterceptors(FileInterceptor('logo'))
+  //   @ApiConsumes('multipart/form-data')
+  //   async registerValorant(
+  //     @Req() req,
+  //     @UploadedFile() logo: Express.Multer.File,
+  //     @Body() teamDeatils
+  //   ) {
+  //     return await this.eventsService.registerValorant();
+  //   }
 
   @ApiConsumes('multipart/form-data')
   @ApiBody({

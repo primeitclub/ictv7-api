@@ -6,7 +6,8 @@ import {
   Column,
   OneToMany,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToOne
 } from 'typeorm';
 import { EsportesGame } from './Esports.entity';
 
@@ -24,8 +25,9 @@ export class EsportsTeam extends Base {
   @Column({ type: 'varchar' })
   image: string;
 
-  @OneToMany(() => User, (User) => User.esportsTeam)
-  users: User[];
+  @OneToOne(() => User, (User) => User.esportsTeam)
+  @JoinColumn({ name: 'captain_id' })
+  user: User;
 
   @ManyToOne(() => EsportesGame, (game) => game.teams)
   @JoinColumn({ name: 'game_id' })

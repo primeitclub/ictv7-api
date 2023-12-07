@@ -12,17 +12,19 @@ import { MailModule } from './mail/mail.module';
 import { TeamMemberModule } from './app/team-member/team-member.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './app/auth/jwt.guard';
+import { FileUploadModule } from './app/file-upload/file-upload.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfigs()),
+    AuthModule,
     EventsModule,
     UserModule,
     EsportsModule,
     GalleryModule,
-    AuthModule,
     MailModule,
-    TeamMemberModule
+    TeamMemberModule,
+    FileUploadModule
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }]

@@ -4,12 +4,14 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  OneToMany
+  OneToMany,
+  OneToOne
 } from 'typeorm';
 import { OTP } from './Otp.entity';
 import { EventParticipants } from 'src/app/events/models/Events.entity';
 import { UserType } from '../user.enum';
 import { EsportsTeam } from 'src/app/esports/models/EsportsTeam.entity';
+import { IdeathonEntiy } from 'src/app/events/models/Competition.entity';
 // import { Photos } from 'src/app/gallery/Photos.entity';
 
 @Entity({ name: 'users' })
@@ -47,9 +49,11 @@ export class User {
   @Column({ type: 'boolean' })
   verified: boolean;
 
-  @ManyToOne(() => EsportsTeam, (esports) => esports.id) // Assuming EsportsTeam is another entity representing the esports team
-  @JoinColumn({ name: 'esports-team-id' })
+  @OneToOne(() => EsportsTeam, (esports) => esports.id) // Assuming EsportsTeam is another entity representing the esports team
   esportsTeam: EsportsTeam;
+
+  @OneToOne(() => IdeathonEntiy, (ideathon) => ideathon.teamLeader) // Assuming EsportsTeam is another entity representing the esports team
+  ideathonTeam: IdeathonEntiy;
 
   //   @ManyToMany(() => Events, (event) => event.users)
   //   @JoinTable({
