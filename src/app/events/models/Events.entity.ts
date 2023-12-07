@@ -12,7 +12,7 @@ import { EventType } from '../events.enum';
 
 @Entity('events')
 export class Events {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ type: 'varchar' })

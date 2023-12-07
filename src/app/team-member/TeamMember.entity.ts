@@ -3,7 +3,7 @@ import { TeamMemberType } from './teamMember.enum';
 
 @Entity({ name: 'teamMember' })
 export class TeamMember {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ type: 'varchar' })

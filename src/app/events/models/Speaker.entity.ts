@@ -9,7 +9,7 @@ import { Events } from './Events.entity';
 
 @Entity()
 export class Speaker {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ type: 'varchar' })
