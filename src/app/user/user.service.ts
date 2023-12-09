@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { UserType } from './user.enum';
 import { addUsersDTO, updateUsersDTO } from './user.dto';
 import { hashInformation } from 'src/utils/bcrypt.util';
-import isValidUUID from 'src/utils/checkUUID.util';
 
 @Injectable()
 export class UserService {
@@ -34,7 +33,7 @@ export class UserService {
     return await this.userRepository.findOne({ where: { email } });
   }
 
-  async findById(id: string): Promise<User> {
+  async findById(id: number): Promise<User> {
     return await this.userRepository.findOne({ where: { id } });
   }
 
@@ -76,11 +75,8 @@ export class UserService {
     };
   }
 
-  async updateUser(id: string, request: updateUsersDTO) {
+  async updateUser(id: number, request: updateUsersDTO) {
     const { username, email, password, user_type } = request;
-
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
 
     let userExist = await this.findById(id);
 
@@ -105,10 +101,7 @@ export class UserService {
     };
   }
 
-  async deleteUser(id: string) {
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
-
+  async deleteUser(id: number) {
     const userExist = await this.findById(id);
 
     if (!userExist)

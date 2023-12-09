@@ -48,12 +48,12 @@ export class UserController {
   }
 
   @Put('update/:id')
-  async handleUpdate(@Param('id') id: string, @Body() request: updateUsersDTO) {
+  async handleUpdate(@Param('id') id: number, @Body() request: updateUsersDTO) {
     return this.userService.updateUser(id, request);
   }
 
   @Delete('delete/:id')
-  async handleDelete(@Param('id') id: string) {
+  async handleDelete(@Param('id') id: number) {
     return this.userService.deleteUser(id);
   }
 

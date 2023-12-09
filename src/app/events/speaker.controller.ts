@@ -27,7 +27,7 @@ export class SpeakerController {
   }
 
   @Get('/:id')
-  async handleGetSpeaker(@Param('id') id: string) {
+  async handleGetSpeaker(@Param('id') id: number) {
     return this.speakerService.getSpeaker(id);
   }
 
@@ -101,14 +101,14 @@ export class SpeakerController {
   @Put('/:id')
   async handleUpdateSpeaker(
     @UploadedFile() imageUrl: Express.Multer.File,
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() request
   ) {
     return this.speakerService.updateSpeaker(id, request, imageUrl.path);
   }
 
   @Delete('/:id')
-  async handleDeleteSpeaker(@Param('id') id: string) {
+  async handleDeleteSpeaker(@Param('id') id: number) {
     return this.speakerService.deleteSpeaker(id);
   }
 }

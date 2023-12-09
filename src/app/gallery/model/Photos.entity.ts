@@ -12,7 +12,7 @@ import { Album } from './Album.entity';
 @Entity('photos')
 export class Photos {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ type: 'varchar' })
   photo: string;

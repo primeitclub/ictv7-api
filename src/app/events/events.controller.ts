@@ -45,7 +45,7 @@ export class EventsController {
 
   @IsPublic()
   @Get('/:id')
-  async handleGetEvent(@Param('id') id: string) {
+  async handleGetEvent(@Param('id') id: number) {
     return await this.eventsService.getEvent(id);
   }
 
@@ -177,7 +177,7 @@ export class EventsController {
   @UseInterceptors(FileInterceptor('eventThumbnail'))
   @Put('/:id')
   async handleUpdateEvent(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() requestBody,
     @UploadedFile() eventThumbnail: Express.Multer.File
   ) {
@@ -189,7 +189,7 @@ export class EventsController {
   }
 
   @Delete('/:id')
-  async handleDeleteEvent(@Param('id') id: string) {
+  async handleDeleteEvent(@Param('id') id: number) {
     return await this.eventsService.deleteEvent(id);
   }
 

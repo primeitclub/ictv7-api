@@ -15,7 +15,7 @@ import { IdeathonEntiy } from 'src/app/events/models/Competition.entity';
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({
     type: 'varchar',

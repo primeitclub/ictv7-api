@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TeamMember } from './TeamMember.entity';
 import { Repository } from 'typeorm';
-import isValidUUID from 'src/utils/checkUUID.util';
 
 @Injectable()
 export class TeamMemberService {
@@ -46,11 +45,8 @@ export class TeamMemberService {
     };
   }
 
-  async updateMember(id: string, request, image: string) {
+  async updateMember(id: number, request, image: string) {
     const { fullName, memberType } = request;
-
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
 
     let teamMemberExists = await this.teamMemberRepository.findOne({
       where: { id }
@@ -75,10 +71,7 @@ export class TeamMemberService {
     };
   }
 
-  async deleteMember(id: string) {
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
-
+  async deleteMember(id: number) {
     await this.teamMemberRepository.delete(id);
 
     return { message: 'Team member deleted successfully.' };

@@ -11,7 +11,7 @@ import { User } from './User.entity'; // Import the User entity
 @Entity()
 export class OTP {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ type: 'varchar' })
   otpNumber: number;

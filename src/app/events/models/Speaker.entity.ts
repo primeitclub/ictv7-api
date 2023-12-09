@@ -9,8 +9,8 @@ import { Events } from './Events.entity';
 
 @Entity()
 export class Speaker {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ type: 'varchar' })
   name: string;
