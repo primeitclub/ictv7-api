@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Speaker } from './models/Speaker.entity';
 import { Repository } from 'typeorm';
-import isValidUUID from 'src/utils/checkUUID.util';
 
 @Injectable()
 export class SpeakerService {
@@ -23,10 +22,7 @@ export class SpeakerService {
     };
   }
 
-  async getSpeaker(id: string) {
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
-
+  async getSpeaker(id: number) {
     const speaker = await this.speakerRepository.findOne({
       where: { id },
       relations: { event: true }
@@ -58,11 +54,8 @@ export class SpeakerService {
     };
   }
 
-  async updateSpeaker(id: string, request, imageUrl) {
+  async updateSpeaker(id: number, request, imageUrl) {
     const { name, bio, companyName, linkedInURL, twitterURL } = request;
-
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
 
     let speakerExists = await this.speakerRepository.findOne({
       where: { id }
@@ -90,10 +83,7 @@ export class SpeakerService {
     };
   }
 
-  async deleteSpeaker(id: string) {
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
-
+  async deleteSpeaker(id: number) {
     await this.speakerRepository.delete({ id });
 
     return {

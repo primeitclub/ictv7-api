@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Album } from './model/Album.entity';
 import { Repository } from 'typeorm';
 import { createGalleryDTO, updateGalleryDTO } from './gallery.dto';
-import isValidUUID from 'src/utils/checkUUID.util';
 import { Photos } from './model/Photos.entity';
 
 @Injectable()
@@ -50,10 +49,8 @@ export class GalleryService {
     };
   }
 
-  async updateAlbum(id: string, request: updateGalleryDTO, thumbnail: any) {
+  async updateAlbum(id: number, request: updateGalleryDTO, thumbnail: any) {
     const { title, slug } = request;
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
 
     let albumExists = await this.albumRepository.findOne({ where: { id } });
 
@@ -76,10 +73,7 @@ export class GalleryService {
     };
   }
 
-  async deleteAlbum(id: string) {
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
-
+  async deleteAlbum(id: number) {
     const albumExists = await this.albumRepository.findOne({ where: { id } });
 
     if (!albumExists)

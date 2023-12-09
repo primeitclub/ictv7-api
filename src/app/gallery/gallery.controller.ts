@@ -80,7 +80,7 @@ export class GalleryController {
   @UseInterceptors(FileInterceptor('thumbnail'))
   @Put('albums/:id')
   async handleUpdateAlbum(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Req() request: updateGalleryDTO,
     @UploadedFile() thumbnail: Express.Multer.File
   ) {
@@ -88,7 +88,7 @@ export class GalleryController {
   }
 
   @Delete('albums/:id')
-  async handleDeleteAlbum(@Param('id') id: string) {
+  async handleDeleteAlbum(@Param('id') id: number) {
     return this.galleryService.deleteAlbum(id);
   }
 

@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { EventParticipants, Events } from './models/Events.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import isValidUUID from 'src/utils/checkUUID.util';
 import { User } from '../user/model/User.entity';
 
 @Injectable()
@@ -29,11 +28,9 @@ export class EventsService {
     };
   }
 
-  async getEvent(id: string) {
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
-
+  async getEvent(id: number) {
     const event = await this.eventRepository.findOne({
+      where: { id },
       relations: { users: true }
     });
 
@@ -69,7 +66,7 @@ export class EventsService {
     };
   }
 
-  async updateEvent(id: string, request, eventThumbnail?: any) {
+  async updateEvent(id: number, request, eventThumbnail?: any) {
     const {
       title,
       slug,
@@ -83,9 +80,6 @@ export class EventsService {
       startTime,
       endTime
     } = request;
-
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
 
     let eventExists = await this.eventRepository.findOne({
       where: { id }
@@ -119,10 +113,7 @@ export class EventsService {
     };
   }
 
-  async deleteEvent(id: string) {
-    if (!isValidUUID(id))
-      throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
-
+  async deleteEvent(id: number) {
     await this.eventRepository.delete({ id });
 
     return {
@@ -131,7 +122,7 @@ export class EventsService {
     };
   }
 
-  async registerToEvent(slug: string, userId: string) {
+  async registerToEvent(slug: string, userId: number) {
     // const user = await this.userRepository.findOne({
     //   where: { id: userId }
     // });
@@ -177,7 +168,7 @@ export class EventsService {
     };
   }
 
-  async unRegisterFromEvent(slug: string, userId: string) {
+  async unRegisterFromEvent(slug: string, userId: number) {
     // TODO: user unregistration
   }
 }

@@ -1,7 +1,6 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  PrimaryColumn,
   Column,
   ManyToOne,
   JoinColumn
@@ -11,7 +10,7 @@ import { Events } from './Events.entity';
 @Entity()
 export class Speaker {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ type: 'varchar' })
   name: string;

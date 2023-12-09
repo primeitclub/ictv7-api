@@ -75,7 +75,7 @@ export class resetPasswordDTO {
   @IsNotEmpty({
     message: 'Id field is required.'
   })
-  id: string;
+  id: number;
 
   @ApiProperty()
   @IsNotEmpty({
@@ -97,7 +97,7 @@ export class verifyOTPDTO {
   @IsNotEmpty({
     message: 'User id field is required.'
   })
-  id: string;
+  id: number;
 
   @ApiProperty()
   @IsNotEmpty({

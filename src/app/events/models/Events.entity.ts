@@ -13,7 +13,7 @@ import { EventType } from '../events.enum';
 @Entity('events')
 export class Events {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ type: 'varchar' })
   title: string;
@@ -71,7 +71,7 @@ export class Events {
 @Entity('EventParticipants')
 export class EventParticipants {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @ManyToOne(() => Events, (event) => event.users)
   @JoinColumn({ name: 'event_id' })

@@ -82,7 +82,7 @@ export class TeamMemberController {
   @Put('/:id')
   @HttpCode(HttpStatus.OK)
   async handleUpdateMember(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @UploadedFile() image: Express.Multer.File,
     @Body() request
   ) {
@@ -91,7 +91,7 @@ export class TeamMemberController {
 
   @Delete('/:id')
   @HttpCode(HttpStatus.OK)
-  async handleDeleteMember(@Param('id') id: string) {
+  async handleDeleteMember(@Param('id') id: number) {
     return this.teamMemberService.deleteMember(id);
   }
 }
