@@ -179,7 +179,7 @@ export class EventsService {
 
   async ideathonRegister(
     details: ideathonTeam,
-    userId: string,
+    userId: number,
     paymentPath: string
   ) {
     console.log(details);
