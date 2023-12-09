@@ -7,11 +7,10 @@ import {
   JoinColumn
 } from 'typeorm';
 import { Events } from './Events.entity';
-import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
 export class Speaker {
-  @PrimaryColumn(uuidv4())
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ type: 'varchar' })
