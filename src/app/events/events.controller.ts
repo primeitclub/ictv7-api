@@ -14,7 +14,7 @@ import { EventsService } from './events.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { IsPublic } from 'src/utils/decorator';
-import { ideathonTeam } from './events.dto';
+import { EventDTO, ideathonTeam } from './events.dto';
 
 @ApiBearerAuth()
 @ApiTags('Events')
@@ -29,8 +29,18 @@ export class EventsController {
   }
 
   @Post('/ideathon/register')
-  async ideathon(@Body() body: ideathonTeam) {
-    return await this.eventsService.ideathonRegister(body);
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('payment'))
+  async ideathon(
+    @Body() body: ideathonTeam,
+    @Req() req,
+    @UploadedFile() eventThumbnail: Express.Multer.File
+  ) {
+    return await this.eventsService.ideathonRegister(
+      body,
+      req.user.id,
+      eventThumbnail.path
+    );
   }
 
   @IsPublic()
@@ -110,7 +120,7 @@ export class EventsController {
   @Post()
   async handleCreateEvent(
     @UploadedFile() eventThumbnail: Express.Multer.File,
-    @Body() requestBody
+    @Body() requestBody: EventDTO
   ) {
     return await this.eventsService.createEvent(
       requestBody,
@@ -192,4 +202,18 @@ export class EventsController {
   async handleUnRegisterFromEvent(@Req() req, @Param('slug') slug: string) {
     return await this.eventsService.unRegisterFromEvent(slug, req.user.id);
   }
+
+  //   @Post('/valorant/register')
+  //   @UseInterceptors(
+  //     FileInterceptor('eventThumbnail'),
+  //     FileInterceptor('idCard'),
+  //     FileInterceptor('valorantIdCard')
+  //   )
+  //   @ApiConsumes('multipart/form-data')
+  //   async registerValorant(
+  //     @Req() req,
+  //     @UploadedFile() eventThumbnail: Express.Multer.File
+  //   ) {
+  //     return await this.eventsService.registerValorant(req.user.id);
+  //   }
 }

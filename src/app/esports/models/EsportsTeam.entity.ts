@@ -10,6 +10,7 @@ import {
   OneToOne
 } from 'typeorm';
 import { EsportesGame } from './Esports.entity';
+import { EsportsTeamMember } from './EsportsTeamMember.entity';
 
 @Entity({ name: 'esports-teams' })
 export class EsportsTeam extends Base {
@@ -32,4 +33,7 @@ export class EsportsTeam extends Base {
   @ManyToOne(() => EsportesGame, (game) => game.teams)
   @JoinColumn({ name: 'game_id' })
   game: EsportesGame;
+
+  @OneToMany(() => EsportsTeamMember, (teamMember) => teamMember.team)
+  teamMember: EsportsTeamMember[];
 }

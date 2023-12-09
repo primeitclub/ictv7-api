@@ -1,3 +1,4 @@
+import Base from 'src/Base.entity';
 import { User } from 'src/app/user/model/User.entity';
 import {
   Column,
@@ -7,8 +8,8 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 
-@Entity()
-export class IdeathonEntiy {
+@Entity('Ideathon')
+export class IdeathonEntiy extends Base {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -29,5 +30,11 @@ export class IdeathonEntiy {
   ideaDescription: string;
 
   @Column()
-  ideaImpact: string;
+  TeamMembers: string;
+
+  @Column()
+  paymentPhoto: string;
+
+  @Column()
+  paymentStatus: boolean;
 }
