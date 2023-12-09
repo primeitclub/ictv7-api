@@ -198,8 +198,8 @@ export class AuthService {
       user: userExists
     });
 
-    const content = `OTP: ${otp}`;
-    await this.mailService.sendEmail(email, 'Verify your email', content);
+    const template = `./otp`;
+    await this.mailService.sendEmail(email, 'Verify your email', template, otp);
 
     return {
       statusCode: HttpStatus.OK,
@@ -231,6 +231,14 @@ export class AuthService {
       await this.otpRepository.remove(userOTP);
 
       await this.userRepository.update(id, { verified: true });
+
+      const template = './registered';
+      await this.mailService.sendEmail(
+        userExists.email,
+        'Account has been registered',
+        template,
+        ''
+      );
 
       return {
         statusCode: HttpStatus.OK,
