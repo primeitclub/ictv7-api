@@ -202,6 +202,7 @@ export class AuthService {
     await this.mailService.sendEmail(email, 'Verify your email', template, otp);
 
     return {
+      id: userExists.id,
       statusCode: HttpStatus.OK,
       message:
         'Verification mail has been sent to your email address. Please check your inbox.'
