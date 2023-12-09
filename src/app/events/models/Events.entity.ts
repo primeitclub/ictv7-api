@@ -1,14 +1,15 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  OneToMany,
+  Entity,
+  JoinColumn,
   ManyToOne,
-  JoinColumn
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
+
 import { User } from '../../user/model/User.entity';
-import { Speaker } from './Speaker.entity';
 import { EventType } from '../events.enum';
+import { Speaker } from './Speaker.entity';
 
 @Entity('events')
 export class Events {

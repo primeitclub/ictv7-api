@@ -1,11 +1,11 @@
-import Base from 'src/Base.entity';
 import { User } from 'src/app/user/model/User.entity';
+import Base from 'src/Base.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('Ideathon')
@@ -37,4 +37,7 @@ export class IdeathonEntiy extends Base {
 
   @Column()
   paymentStatus: boolean;
+
+  @Column()
+  collegeName: string;
 }

@@ -26,6 +26,9 @@ export class ideathonTeam {
   sdgGoal: sdgGoal;
 
   @ApiProperty()
+  collegeName: string;
+
+  @ApiProperty()
   ideaName: string;
 
   @ApiProperty()
