@@ -3,6 +3,8 @@ import { Repository } from 'typeorm';
 import { EventParticipants, Events } from './models/Events.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/model/User.entity';
+import { ideathonTeam } from './events.dto';
+import { IdeathonEntiy } from './models/Competition.entity';
 
 @Injectable()
 export class EventsService {
@@ -13,7 +15,9 @@ export class EventsService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(EventParticipants)
-    private eventParticipantsRepo: Repository<EventParticipants>
+    private eventParticipantsRepo: Repository<EventParticipants>,
+    @InjectRepository(IdeathonEntiy)
+    private IdeathonEntiy: Repository<IdeathonEntiy>
   ) {}
 
   async getAllEvents() {
@@ -170,5 +174,20 @@ export class EventsService {
 
   async unRegisterFromEvent(slug: string, userId: number) {
     // TODO: user unregistration
+  }
+  async registerValorant() {}
+
+  async ideathonRegister(
+    details: ideathonTeam,
+    userId: string,
+    paymentPath: string
+  ) {
+    console.log(details);
+    const ideathonRegister = await IdeathonEntiy.save({
+      teamLeader: { id: userId },
+      paymentPhoto: paymentPath,
+      ...details
+    });
+    return ideathonRegister;
   }
 }

@@ -9,10 +9,17 @@ import { SpeakerService } from './speaker.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { multerConfig } from 'src/config/multer.config';
 import { User } from '../user/model/User.entity';
+import { IdeathonEntiy } from './models/Competition.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Events, Speaker, User, EventParticipants]),
+    TypeOrmModule.forFeature([
+      Events,
+      Speaker,
+      User,
+      EventParticipants,
+      IdeathonEntiy
+    ]),
     MulterModule.register(multerConfig)
   ],
   controllers: [EventsController, SpeakerController],

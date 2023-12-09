@@ -6,9 +6,11 @@ import {
   Column,
   OneToMany,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToOne
 } from 'typeorm';
 import { EsportesGame } from './Esports.entity';
+import { EsportsTeamMember } from './EsportsTeamMember.entity';
 
 @Entity({ name: 'esports-teams' })
 export class EsportsTeam extends Base {
@@ -24,10 +26,14 @@ export class EsportsTeam extends Base {
   @Column({ type: 'varchar' })
   image: string;
 
-  @OneToMany(() => User, (User) => User.esportsTeam)
-  users: User[];
+  @OneToOne(() => User, (User) => User.esportsTeam)
+  @JoinColumn({ name: 'captain_id' })
+  user: User;
 
   @ManyToOne(() => EsportesGame, (game) => game.teams)
   @JoinColumn({ name: 'game_id' })
   game: EsportesGame;
+
+  @OneToMany(() => EsportsTeamMember, (teamMember) => teamMember.team)
+  teamMember: EsportsTeamMember[];
 }
