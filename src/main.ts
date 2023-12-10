@@ -6,11 +6,10 @@ import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import { sessionKeys } from 'src/config/env';
 import * as passport from 'passport';
-import * as cors from 'cors';
 const PORT = env.port;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(cors());
+  app.enableCors();
   console.log({ PORT });
   app.enableCors({
     origin: [
@@ -19,7 +18,9 @@ async function bootstrap() {
       'http://ictv7.primitclub.com',
       'http://localhost:5173',
       'localhost:5173'
-    ]
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true
   });
   //   google oauth setup
   app.use(
