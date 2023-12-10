@@ -198,8 +198,9 @@ export class AuthService {
       user: userExists
     });
 
-    const content = `OTP: ${otp}`;
-    await this.mailService.sendEmail(email, 'Verify your email', content);
+    const template = `./otp`;
+    // await this.mailService.sendEmail(email, 'Verify your email', template, otp);
+    await this.mailService.sendOTPEmail(email, 'Verify your email', otp);
 
     return {
       statusCode: HttpStatus.OK,

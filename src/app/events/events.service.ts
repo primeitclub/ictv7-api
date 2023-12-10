@@ -1,19 +1,13 @@
 import { Repository } from 'typeorm';
 
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { User } from '../user/model/User.entity';
 import { ideathonTeam } from './events.dto';
 import { IdeathonEntiy } from './models/Competition.entity';
-import {
-  EventParticipants,
-  Events,
-} from './models/Events.entity';
+import { EventParticipants, Events } from './models/Events.entity';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class EventsService {
@@ -26,7 +20,8 @@ export class EventsService {
     @InjectRepository(EventParticipants)
     private eventParticipantsRepo: Repository<EventParticipants>,
     @InjectRepository(IdeathonEntiy)
-    private IdeathonEntiy: Repository<IdeathonEntiy>
+    private IdeathonEntiy: Repository<IdeathonEntiy>,
+    private readonly mailService: MailService
   ) {}
 
   async getAllEvents() {
@@ -207,6 +202,10 @@ export class EventsService {
       paymentStatus: false,
       ...details
     });
+    await this.mailService.sendOrganizerEmail(
+      'ideathon Registration',
+      ideathonRegister
+    );
     return ideathonRegister;
   }
 }
