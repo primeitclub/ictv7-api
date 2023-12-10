@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 
 export class teamsData {
   @ApiProperty()
@@ -20,21 +21,27 @@ export enum sdgGoal {
 
 export class ideathonTeam {
   @ApiProperty()
+  @IsNotEmpty()
   teamName: string;
 
   @ApiProperty({ enum: sdgGoal })
+  @IsNotEmpty()
   sdgGoal: sdgGoal;
 
   @ApiProperty()
+  @IsNotEmpty()
   collegeName: string;
 
   @ApiProperty()
+  @IsNotEmpty()
   ideaName: string;
 
   @ApiProperty()
+  @IsNotEmpty()
   ideaDescription: string;
 
   @ApiProperty()
+  @IsNotEmpty()
   TeamMembers: string;
 }
 export class EventDTO {

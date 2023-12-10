@@ -10,6 +10,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { multerConfig } from 'src/config/multer.config';
 import { User } from '../user/model/User.entity';
 import { IdeathonEntiy } from './models/Competition.entity';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { IdeathonEntiy } from './models/Competition.entity';
     MulterModule.register(multerConfig)
   ],
   controllers: [EventsController, SpeakerController],
-  providers: [EventsService, SpeakerService]
+  providers: [EventsService, SpeakerService, MailService]
 })
 export class EventsModule {}

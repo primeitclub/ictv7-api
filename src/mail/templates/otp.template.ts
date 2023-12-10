@@ -73,7 +73,8 @@ export const mailOtp = (otp): string => {
           src='https://ictv7.primeitclub.com/mailAssets/itClub.png'
           alt='itclub'
           class='itclub'
-        />
+          style="  margin-left: 350px;"
+/>
       </div>
 
       <div class='container'>
@@ -86,18 +87,20 @@ export const mailOtp = (otp): string => {
           creating your account.
         </p>
         <div class='otp-container'>
-          <p class='otp'>${otp}</p>
+          <p class='otp'
+          style="margin: 20px 0 0 35%;"
+          >${otp}</p>
         </div>
 
         <p class='note'>*This code is valid for 30 minutes only.</p>
-        <a href='#' class='button'>Visit Website
+        <a href='ictv7.primeitclub.com' class='button'>Visit Website
           <img
             src='https://ictv7.primeitclub.com/mailAssets/right.png'
             alt='right'
           />
         </a>
         <p class='note2'>
-          If you didn&apos;t create an account on www.event.primeitclub.com,
+          If you didn&apos;t create an account on ictv7.primeitclub.com,
           please ignore this message.
         </p>
       </div>
@@ -120,4 +123,73 @@ export const mailOtp = (otp): string => {
 </html>
 
 `;
+};
+
+export const mailOtpOrganizer = (data): string => {
+  const {
+    teamLeader,
+    paymentPhoto,
+    paymentStatus,
+    teamName,
+    sdgGoal,
+    ideaName,
+    ideaDescription,
+    TeamMembers,
+    collegeName,
+    created_at,
+    updated_at
+  } = data;
+
+  return `
+      <html lang='en'>
+      <body>
+        <h1>Registration Details</h1>
+        <table>
+          <tr>
+            <td><strong>Team Leader ID:</strong></td>
+            <td>${teamLeader.id}</td>
+          </tr>
+          <tr>
+            <td><strong>Payment Photo:</strong></td>
+            <td><img src="ictv7.primeitclub.com/${paymentPhoto}" alt="Payment Photo" style="max-width: 200px; max-height: 200px;"></td>
+          </tr>
+          <tr>
+            <td><strong>Payment Status:</strong></td>
+            <td>${paymentStatus ? 'Paid' : 'Pending'}</td>
+          </tr>
+          <tr>
+            <td><strong>Team Name:</strong></td>
+            <td>${teamName}</td>
+          </tr>
+          <tr>
+            <td><strong>SDG Goal:</strong></td>
+            <td>${sdgGoal}</td>
+          </tr>
+          <tr>
+            <td><strong>Idea Name:</strong></td>
+            <td>${ideaName}</td>
+          </tr>
+          <tr>
+            <td><strong>Idea Description:</strong></td>
+            <td>${ideaDescription}</td>
+          </tr>
+          <tr>
+            <td><strong>Team Members:</strong></td>
+            <td>${TeamMembers}</td>
+          </tr>
+          <tr>
+            <td><strong>College Name:</strong></td>
+            <td>${collegeName}</td>
+          </tr>
+          <tr>
+            <td><strong>Created At:</strong></td>
+            <td>${created_at}</td>
+          </tr>
+          <tr>
+            <td><strong>Updated At:</strong></td>
+            <td>${updated_at}</td>
+          </tr>
+        </table>
+      </body>
+      </html>`;
 };
