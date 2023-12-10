@@ -1,10 +1,19 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { EventParticipants, Events } from './models/Events.entity';
+
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { User } from '../user/model/User.entity';
 import { ideathonTeam } from './events.dto';
 import { IdeathonEntiy } from './models/Competition.entity';
+import {
+  EventParticipants,
+  Events,
+} from './models/Events.entity';
 
 @Injectable()
 export class EventsService {
@@ -182,10 +191,20 @@ export class EventsService {
     userId: number,
     paymentPath: string
   ) {
+    const alreadyRegistered = await this.IdeathonEntiy.findOne({
+      where: { teamLeader: { id: userId } }
+    });
+    if (alreadyRegistered) {
+      throw new HttpException(
+        'User is already registered for the event.',
+        HttpStatus.CONFLICT
+      );
+    }
     console.log(details);
     const ideathonRegister = await IdeathonEntiy.save({
       teamLeader: { id: userId },
       paymentPhoto: paymentPath,
+      paymentStatus: false,
       ...details
     });
     return ideathonRegister;
