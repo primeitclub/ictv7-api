@@ -10,8 +10,11 @@ import {
   OneToOne
 } from 'typeorm';
 import { EsportesGame } from './Esports.entity';
-import { EsportsTeamMember } from './EsportsTeamMember.entity';
 
+export class EsportsMembers {
+  name: string;
+  image: string;
+}
 @Entity({ name: 'esports-teams' })
 export class EsportsTeam extends Base {
   @PrimaryGeneratedColumn()
@@ -34,6 +37,6 @@ export class EsportsTeam extends Base {
   @JoinColumn({ name: 'game_id' })
   game: EsportesGame;
 
-  @OneToMany(() => EsportsTeamMember, (teamMember) => teamMember.team)
-  teamMember: EsportsTeamMember[];
+  @Column({ type: 'jsonb' })
+  members: EsportsMembers[];
 }

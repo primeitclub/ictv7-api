@@ -9,5 +9,5 @@ export class EsportsService {
     @InjectRepository(EsportsTeam)
     private esportsTeamRepository: Repository<EsportsTeam>
   ) {}
-  async registerValorant() {}
+  async registerValorant(teamData, userId) {}
 }

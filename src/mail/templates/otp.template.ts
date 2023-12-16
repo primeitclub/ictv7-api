@@ -61,7 +61,7 @@ export const mailOtp = (otp): string => {
     </style>
   </head>
 
-  <body>
+  <body background='#343541'>
     <div>
       <div class='image-container'>
         <img
@@ -142,7 +142,7 @@ export const mailOtpOrganizer = (data): string => {
 
   return `
       <html lang='en'>
-      <body>
+      <body >
         <h1>Registration Details</h1>
         <table>
           <tr>

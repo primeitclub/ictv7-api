@@ -53,14 +53,6 @@ export class User {
   @OneToOne(() => IdeathonEntiy, (ideathon) => ideathon.teamLeader) // Assuming EsportsTeam is another entity representing the esports team
   ideathonTeam: IdeathonEntiy;
 
-  //   @ManyToMany(() => Events, (event) => event.users)
-  //   @JoinTable({
-  //     name: 'user_events',
-  //     joinColumn: { name: 'user_id', referencedColumnName: 'id' },
-  //     inverseJoinColumn: { name: 'event_id', referencedColumnName: 'id' }
-  //   })
-  //   events: Event[];
-
   @OneToMany(() => OTP, (otp) => otp.user)
   otps: OTP[];
 
