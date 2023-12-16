@@ -25,15 +25,32 @@ export class EventsService {
   ) {}
 
   async getAllEvents() {
-    const events = await this.eventRepository.find({
-      relations: { users: true }
+    // const events = await this.eventRepository.find();
+
+    // return {
+    //   statusCode: HttpStatus.OK,
+    //   message: 'List of events.',
+    //   events
+    // };
+    const organizedEvents = await this.eventRepository
+      .createQueryBuilder('event')
+      .select('event.*')
+      .addSelect('event.eventType')
+      .orderBy('event.eventType')
+      .getRawMany();
+
+    // Group events by event type
+    const result: { [key: string]: Event[] } = {};
+
+    organizedEvents.forEach((event) => {
+      const eventType = event.eventType;
+      if (!result[eventType]) {
+        result[eventType] = [];
+      }
+      result[eventType].push(event);
     });
 
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'List of events.',
-      events
-    };
+    return result;
   }
 
   async getEvent(id: number) {
